@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">النطق عند الشحن</string>
+
+
+    <string name="mp3_country">شكرا</string>
+    <string name="mp3_disconnect_country">رجع</string>
+
+    <string name="exit" translatable="false">العودة</string>
+    <string name="description_rate" translatable="false">هل تريد العودة إلى الصفحة الأولى</string>
+
+    <string name="continu">استمر</string>
+    <string name="play">العب</string>
+    <string name="exit_app">خروج</string>
+    <string name="rate_us">قيمنا</string>
+    <string name="share">مشاركة التطبيق</string>
+
+    <string name="privacy_policy">سيتم عرض سياسة الخصوصية هنا</string>
+    <string name="on_connect">متصل</string>
+    <string name="on_disconnect">غير متصل</string>
+    <string name="select_the_type">حدد نوع نغمة الرنين</string>
+    <string name="set">تعيين</string>
+    <string name="as_the_ringtone">كنغمة رنين</string>
+    <string name="microphone_permission_need">مطلوب إذن الميكروفون للتسجيل الصوتي. يرجى منح الإذن.</string>
+    <string name="storage_permission_need">التخزين مهم لهذا التطبيق. يرجى منح الإذن.</string>
+    <string name="request_permission">طلب الإذن</string>
+    <string name="download_success">تم تنزيل الملف بنجاح</string>
+    <string name="asset_folder_name">نغمات الرنين</string>
+    <string name="download_folder_name">تنزيل نغمات</string>
+    <string name="download_screen_title">تنزيل</string>
+    <string name="home_screen_title">الصفحة الرئيسية</string>
+    <string name="home_screen_instructions">سيقوم التطبيق بتشغيل نغمة رنين عند تغيير حالة الشحن!</string>
+    <string name="loading">جاري التحميل...</string>
+    <string name="recording_folder_name">تسجيلات حالة الشحن</string>
+    <string name="phone_screen_title">الهاتف</string>
+    <string name="privacy_screen_title">سياسة الخصوصية</string>
+    <string name="record_tab_title">تسجيل</string>
+    <string name="my_records_tab_title">تسجلاتي</string>
+    <string name="record_screen_title">تسجيل</string>
+    <string name="recording_saved">تم حفظ التسجيل</string>
+    <string name="ringtone_screen_title">نغمة الرنين</string>
+    <string name="phone">الهاتف</string>
+    <string name="download">تنزيل</string>
+    <string name="record">تسجيل</string>
+    <string name="search_screen_title">بحث</string>
+    <string name="search_box_hint">نغمات الرنين</string>
+    <string name="search_for_ringtones">ابحث عن نغمات الرنين</string>
+    <string name="settings_screen_title">الإعدادات</string>
+    <string name="unlock_screen_title">فتح</string>
+    <string name="unlock_for_free">قم بإلغاء القفل مجانًا</string>
+    <string name="success">نجاح!</string>
+    <string name="unlock">فتح</string>
+    <string name="ok">حسنًا</string>
+    <string name="start">ابدأ</string>
+    <string name="version">الإصدار</string>
+    <string name="more_apps">المزيد من التطبيقات</string>
+    <string name="privacy">سياسة الخصوصية</string>
+    <string name="record_file_prefix">voice_</string>
+    <string name="room_database_name">app-database</string>
+    <string name="first_time_loading_msg">الحصول على جميع نغمات الرنين من جهازك. الرجاء الانتظار ..</string>
+</resources>

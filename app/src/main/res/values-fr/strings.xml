@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Charging Status</string>
+
+    <string name="mp3_country">connect</string>
+    <string name="mp3_disconnect_country">disconnect</string>
+
+    <string name="exit" translatable="false">Retour</string>
+    <string name="description_rate" translatable="false">Voulez-vous revenir à la première page?</string>
+
+    <string name="continu">Continuer</string>
+    <string name="play">Jouer</string>
+    <string name="exit_app">Exit</string>
+    <string name="rate_us">Quitter</string>
+    <string name="share">Share</string>
+
+    <string name="privacy_policy">Privacy policy will be shown here</string>
+    <string name="on_connect">On Connect</string>
+    <string name="on_disconnect">On Disconnect</string>
+    <string name="select_the_type">Selected the type of ringtone</string>
+    <string name="set">Set</string>
+    <string name="as_the_ringtone">as the ringtone</string>
+    <string name="microphone_permission_need">The microphone permission is needed for voice recording. Please grant the permission.</string>
+    <string name="storage_permission_need">The storage is important for this app. Please grant the permission.</string>
+    <string name="request_permission">Request permission</string>
+    <string name="download_success">File downloaded successfully</string>
+    <string name="asset_folder_name">ringtones</string>
+    <string name="download_folder_name">ChargingStatus Download</string>
+    <string name="download_screen_title">Download</string>
+    <string name="home_screen_title">Home</string>
+    <string name="home_screen_instructions">The app will play an ringtone when charging status changes!</string>
+    <string name="loading">Loading..</string>
+    <string name="recording_folder_name">ChargingStatus Recordings</string>
+    <string name="phone_screen_title">Phone</string>
+    <string name="privacy_screen_title">Privacy</string>
+    <string name="record_tab_title">Record</string>
+    <string name="my_records_tab_title">My Records</string>
+    <string name="record_screen_title">Record</string>
+    <string name="recording_saved">Recording saved</string>
+    <string name="ringtone_screen_title">Ringtone</string>
+    <string name="phone">Phone</string>
+    <string name="download">Download</string>
+    <string name="record">Record</string>
+    <string name="search_screen_title">Search</string>
+    <string name="search_box_hint">Ringtones</string>
+    <string name="search_for_ringtones">Search for ringtones</string>
+    <string name="settings_screen_title">Settings</string>
+    <string name="unlock_screen_title">Unlock</string>
+    <string name="unlock_for_free">Unlock for free</string>
+    <string name="success">Success!</string>
+    <string name="unlock">Unlock</string>
+    <string name="ok">Ok</string>
+    <string name="start">Start</string>
+    <string name="version">Version</string>
+    <string name="more_apps">More Apps</string>
+    <string name="privacy">Privacy</string>
+    <string name="record_file_prefix">voice_</string>
+    <string name="room_database_name">app-database</string>
+    <string name="first_time_loading_msg">Getting all ringtones from your device. Please wait..</string>
+</resources>

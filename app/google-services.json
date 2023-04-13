@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "857893096612",
+    "project_id": "chargingstatusmonitor",
+    "storage_bucket": "chargingstatusmonitor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857893096612:android:ad7d9dccc613d6153aea31",
+        "android_client_info": {
+          "package_name": "com.chargingstatusmonitor.souhadev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "857893096612-lec78h1bo1ikde36oo14nd8qmn1ui4sh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBywz7GzhLZeW6lWDoZvbk8YdHELThB4yU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "857893096612-lec78h1bo1ikde36oo14nd8qmn1ui4sh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

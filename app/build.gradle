@@ -1,0 +1,251 @@
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+    id 'com.google.firebase.crashlytics'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        //applicationId "com.example.chargingstatus"
+        //applicationId "com.chargingstatusmonitor.souhadev"
+        applicationId "com.chargingstatusmonitor.souhadev"
+        minSdk 21
+        targetSdk 33
+        versionCode 14
+        versionName "14"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    kapt {
+        correctErrorTypes = true
+    }
+
+
+
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.activity:activity-compose:1.6.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.navigation:navigation-compose:2.6.0-alpha03"
+    implementation "com.google.accompanist:accompanist-permissions:0.27.0"
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    def room_version = "2.4.3"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    kapt "androidx.room:room-compiler:$room_version"
+
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
+
+    implementation 'com.google.android.play:review:2.0.1'
+
+    // For Kotlin users also add the Kotlin extensions library for Play In-App Review:
+    implementation 'com.google.android.play:review-ktx:2.0.0'
+
+
+    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'com.intuit.sdp:sdp-android:1.1.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+
+
+    implementation 'com.android.volley:volley:1.2.0'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'androidx.lifecycle:lifecycle-process:2.3.1'
+
+    def lifecycle_version = "2.0.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime:$lifecycle_version"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+
+
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+    implementation 'com.facebook.android:facebook-android-sdk:15.1.0'
+    implementation 'com.google.ads.mediation:facebook:6.12.0.0'
+
+    // TradPlus
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    //implementation 'com.google.android.gms:play-services-ads-identifier:18.0.1'
+
+    //TradPlus
+    implementation 'com.tradplusad:tradplus:9.3.10.1'
+    // Admob
+    implementation 'com.google.android.gms:play-services-ads:21.5.0'
+    implementation 'com.tradplusad:tradplus-googlex:2.9.3.10.1'
+    // Facebook
+    // Meta
+    implementation 'com.facebook.android:audience-network-sdk:6.12.0'
+    implementation 'com.tradplusad:tradplus-facebook:1.9.3.10.1'
+    // Pangle
+    implementation 'com.tradplusad:tradplus-pangle:19.9.3.10.1'
+    implementation 'com.pangle.global:ads-sdk:4.9.1.2'
+
+    // Applovin
+    implementation 'com.applovin:applovin-sdk:11.7.1'
+    implementation 'com.tradplusad:tradplus-applovin:9.9.3.10.1'
+    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+
+    // UnityAds
+    implementation 'com.tradplusad:tradplus-unity:5.9.3.10.1'
+    implementation 'com.unity3d.ads:unity-ads:4.5.0'
+
+    implementation 'com.unity3d.mediation:mediation-sdk:1.1.0'
+    implementation 'com.unity3d.mediation:unityads-adapter:1.1.0'
+
+    // Cross Promotion
+    implementation 'com.tradplusad:tradplus-crosspromotion:27.9.3.10.1'
+    // Adx
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.tradplusad:tp_exchange:40.9.3.10.1'
+    //Vungle
+    implementation 'com.tradplusad:tradplus-vunglex:7.9.3.10.1'
+    implementation 'com.vungle:publisher-sdk-android:6.12.0'
+    implementation 'com.google.android.gms:play-services-basement:17.5.0'
+
+    // Yandex
+    implementation 'com.yandex.android:mobileads:5.4.1'
+    implementation 'com.tradplusad:tradplus-yandex:50.9.3.10.1'
+
+    // Smaato
+    implementation 'com.tradplusad:tradplus-smaato:38.9.3.10.1'
+    implementation 'com.smaato.android.sdk:smaato-sdk:21.8.6'
+    implementation 'com.smaato.android.sdk:smaato-sdk-banner:21.8.6'
+    implementation 'com.smaato.android.sdk:smaato-sdk-interstitial:21.8.6'
+    implementation 'com.smaato.android.sdk:smaato-sdk-rewarded-ads:21.8.6'
+    implementation 'com.smaato.android.sdk:smaato-sdk-native:21.8.6'
+
+    // Mintegral
+    implementation 'com.tradplusad:tradplus-mintegralx_overseas:18.9.3.10.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'com.mbridge.msdk.oversea:reward:16.3.61'
+    implementation 'com.mbridge.msdk.oversea:mbsplash:16.3.61'
+    implementation 'com.mbridge.msdk.oversea:mbbanner:16.3.61'
+    implementation 'com.mbridge.msdk.oversea:mbnative:16.3.61'
+    implementation 'com.mbridge.msdk.oversea:mbnativeadvanced:16.3.61'
+    implementation 'com.mbridge.msdk.oversea:newinterstitial:16.3.61'
+    implementation 'com.mbridge.msdk.oversea:mbbid:16.3.61'
+    // Inmobi
+    /*implementation 'com.tradplusad:tradplus-inmobix:23.9.3.10.1'
+    implementation 'com.inmobi.monetization:inmobi-ads:10.1.2'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+    implementation 'androidx.browser:browser:1.3.0'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'*/
+    /*   // Chartboost
+       implementation 'com.tradplusad:tradplus-chartboostx:15.9.3.10.1'
+       implementation 'com.chartboost:chartboost-sdk:9.2.0'
+       implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+       implementation 'com.google.android.gms:play-services-base:17.4.0'
+
+       // Criteo
+       implementation 'com.criteo.publisher:criteo-publisher-sdk:4.8.1'
+       implementation 'com.tradplusad:tradplus-criteo:32.9.3.10.1'
+       implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
+       implementation 'com.google.android.gms:play-services-base:17.4.0'
+       // MyTarget
+       implementation 'com.my.target:mytarget-sdk:5.16.3'
+       implementation 'com.tradplusad:tradplus-mytarget:33.9.3.10.1'
+
+       // Mandatory
+       implementation 'androidx.work:work-runtime:2.4.0'
+       // Mandatory
+       implementation 'com.github.bumptech.glide:glide:4.11.0' // Mandatory
+       annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+       // Cross Promotion
+       implementation 'com.tradplusad:tradplus-crosspromotion:27.9.3.10.1'
+
+       // Huawei
+       implementation 'com.tradplusad:tradplus-huawei:41.9.3.10.1'
+       implementation 'com.huawei.hms:ads-lite:13.4.60.301'
+       // Start.io
+       implementation 'com.startapp:inapp-sdk:4.10.7'
+       implementation 'com.tradplusad:tradplus-startapp:28.9.3.10.1'
+      */
+/*    //
+
+    // Bigo
+    implementation 'com.bigossp:bigo-ads:2.7.1'
+    implementation 'com.tradplusad:tradplus-bigo:57.9.3.10.1'
+    // Adx
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.tradplusad:tp_exchange:40.9.3.10.1'*/
+
+   /* // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:31.3.0')
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics'*/
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+    implementation 'com.onesignal:OneSignal:[4.0.0, 4.99.99]'
+    // This dependency is downloaded from the Google’s Maven repository.
+    // So, make sure you also include that repository in your project's build.gradle file.
+    implementation 'com.codemybrainsout.rating:ratingdialog:1.0.8'
+
+    implementation platform('com.google.firebase:firebase-bom:31.4.0')
+    // Add the dependencies for the Crashlytics NDK and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-crashlytics-ndk'
+    implementation 'com.google.firebase:firebase-analytics'
+}
