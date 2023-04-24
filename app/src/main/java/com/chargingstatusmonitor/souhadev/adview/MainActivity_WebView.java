@@ -177,6 +177,4 @@ public class MainActivity_WebView extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
 }

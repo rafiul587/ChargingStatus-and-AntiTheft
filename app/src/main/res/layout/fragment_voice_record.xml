@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".ui.fragments.VoiceRecordFragment">
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:textSize="30sp"
+        android:text="00:00:00"/>
+
+    <FrameLayout
+        android:id="@+id/record"
+        android:layout_width="162dp"
+        android:layout_height="162dp"
+        android:background="@drawable/bg_voice_recorder">
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_keyboard_voice_24"
+            app:tint="@color/white" />
+    </FrameLayout>
+</LinearLayout>
