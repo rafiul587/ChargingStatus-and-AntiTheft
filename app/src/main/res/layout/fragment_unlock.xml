@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.HomeFragment">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        tools:text="Unlock for free"
+        android:layout_marginBottom="20dp"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/unlock"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:text="@string/unlock"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="@drawable/bg_button"
+        app:backgroundTint="@color/red" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/ok"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        android:text="@string/ok"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:background="@drawable/bg_button"
+        app:backgroundTint="@color/red" />
+
+</LinearLayout>

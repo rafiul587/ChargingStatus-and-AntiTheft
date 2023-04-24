@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.chargingstatusmonitor.souhadev">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="android.permission.Ad_ID" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" tools:node="remove"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ChargingStatus"
-        android:name=".MyApplication"
-        android:requestLegacyExternalStorage="true"
-        android:hardwareAccelerated="true">
-
-        <!--TRADPLUS-->
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".StartActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait" /> <!-- TRADPLUS -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -38,36 +47,26 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.chargingstatusmonitor.souhadev.adview.MainActivity_WebView"
+        <activity
+            android:name=".adview.MainActivity_WebView"
             android:exported="true"
-            tools:ignore="Instantiatable,MissingClass">
-
-        </activity>
+            tools:ignore="Instantiatable,MissingClass" />
         <activity
             android:name=".Continue"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.ChargingStatus"/>
+            android:theme="@style/Theme.ChargingStatus" />
         <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
-            android:theme="@style/Theme.ChargingStatus">
-        </activity>
+            android:name=".snake.MainActivity_Snake"
+            android:exported="true" />
 
-        <activity android:name=".snake.MainActivity_Snake"
-            android:exported="true">
-        </activity>
-
-        <service android:name=".utils.MyService"/>
+        <service android:name=".utils.MyService" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
-
+            android:value="ca-app-pub-3940256099942544~3347511713" />
         <meta-data
             android:name="applovin.sdk.key"
-            android:value="bmc4G7d3K6eTnM3bTzXGdTy_pIzmtKwKrFgMEwaieX9zCGkdaVkZNfCcWMTzfuer9bFAewC9QBsq_FGt2CI4le"  />
+            android:value="bmc4G7d3K6eTnM3bTzXGdTy_pIzmtKwKrFgMEwaieX9zCGkdaVkZNfCcWMTzfuer9bFAewC9QBsq_FGt2CI4le" />
     </application>
 
 </manifest>

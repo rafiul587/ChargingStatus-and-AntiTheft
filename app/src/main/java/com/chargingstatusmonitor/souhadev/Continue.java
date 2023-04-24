@@ -12,10 +12,7 @@ import android.widget.Toast;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.content.ContextCompat;
 
-import com.chargingstatusmonitor.souhadev.adview.MainActivity_WebView;
 import com.chargingstatusmonitor.souhadev.snake.MainActivity_Snake;
-import com.codemybrainsout.ratingdialog.RatingDialog;
-import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.play.core.review.ReviewInfo;
@@ -55,7 +52,7 @@ public class Continue extends Activity {
         this.btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Continue.this, MainActivity.class);
+                Intent intent = new Intent(Continue.this, StartActivity.class);
                    // startActivity(new Intent(getApplicationContext(), Continue.class));
                     startActivity(intent);
                     //finish();

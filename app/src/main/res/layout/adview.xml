@@ -5,9 +5,9 @@
     android:background="#fff"
     >
 
-    <com.chargingstatusmonitor.souhadev.adview.AdView
+<!--    <com.chargingstatusmonitor.souhadev.adview.AdView
         android:id="@+id/ad_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" />-->
 
 </RelativeLayout>

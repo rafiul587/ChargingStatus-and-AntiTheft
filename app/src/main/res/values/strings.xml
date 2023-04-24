@@ -57,4 +57,10 @@
     <string name="room_database_name">app-database</string>
     <string name="first_time_loading_msg">Getting all ringtones from your device. Please wait..</string>
     <string name="no_ringtone">No Ringtones Found</string>
+    <string name="file_icon">File Icon</string>
+    <string name="on_connect_underline"><u>On Connect</u></string>
+    <string name="on_disconnect_underline"><u>On Disconnect</u></string>
+    <string name="start_service_btn_text">Start Detecting</string>
+    <string name="stop_service_btn_text">Stop Detecting</string>
+    <string name="saved_successfully">File saved successfully</string>
 </resources>
