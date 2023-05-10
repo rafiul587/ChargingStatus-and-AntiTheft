@@ -36,6 +36,7 @@ import com.chargingstatusmonitor.souhadev.RingtonesAdapter;
 import com.chargingstatusmonitor.souhadev.data.FileDao;
 import com.chargingstatusmonitor.souhadev.data.FileEntity;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentPhoneBinding;
+import com.chargingstatusmonitor.souhadev.utils.Constants;
 import com.chargingstatusmonitor.souhadev.utils.FileType;
 import com.chargingstatusmonitor.souhadev.utils.PermissionUtils;
 
@@ -67,11 +68,13 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
         adapter = new RingtonesAdapter(fileModels, this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         binding.recyclerView.setAdapter(adapter);
+        binding.loadingText.setVisibility(View.VISIBLE);
+        binding.progressBar.setVisibility(View.VISIBLE);
         dao.getAllRingtones().observe(getViewLifecycleOwner(), fileEntities -> {
-            binding.loadingText.setVisibility(View.GONE);
-            binding.recyclerView.setVisibility(View.VISIBLE);
             fileModels.clear();
             fileModels.addAll(fileEntities);
+            binding.loadingText.setVisibility(View.GONE);
+            binding.progressBar.setVisibility(View.GONE);
             adapter.notifyDataSetChanged();
         });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -121,7 +124,7 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
     @Override
     public void onSetRingtoneClick(int position) {
         FileEntity fileEntity = fileModels.get(position);
-        showDialog(requireContext(), dataStore, fileEntity.getName(), FileType.RINGTONE + "-" + fileEntity.getUri());
+        showDialog(requireContext(), dataStore, fileEntity.getName(), FileType.RINGTONE + Constants.SPLITTER + fileEntity.getUri());
     }
 
     @Override
@@ -135,7 +138,7 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
         if (fileEntity.isLocked()) {
             Bundle bundle = new Bundle();
             bundle.putInt("id", fileEntity.getUid());
-            navController.navigate(R.id.action_navigation_phone_to_navigation_unlock, bundle);
+            navController.navigate(R.id.action_to_navigation_unlock, bundle);
         } else {
             if (adapter.getSelectedItem() == position) {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {

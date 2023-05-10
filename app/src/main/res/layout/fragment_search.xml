@@ -43,17 +43,16 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:contentDescription="Search Image"
-            android:src="@drawable/ic_baseline_search_24"
-            app:tint="@color/red" />
+            android:src="@drawable/ic_search" />
 
         <TextView
             android:id="@+id/searchText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="@string/search_for_ringtones"
-            android:textColor="@android:color/black"
+            android:textColor="@color/green_700"
             android:textSize="25sp"/>
     </LinearLayout>
 

@@ -5,26 +5,29 @@
 
     <ImageView
         android:id="@+id/chargingIcon"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:contentDescription="Charging Icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/ic_baseline_battery_charging_full_24"/>
+        android:src="@drawable/ic_start_screen" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/startButton"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="50dp"
-        android:paddingVertical="15dp"
+        android:paddingVertical="18dp"
+        android:textAlignment="center"
+        android:textColor="@color/green_700"
         android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="@drawable/bg_rectangle_button_gradient_greenish"
         app:layout_constraintTop_toBottomOf="@id/chargingIcon"
-     app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/start"/>
+        android:text="@string/start" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

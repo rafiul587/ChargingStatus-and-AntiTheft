@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
     id 'com.google.firebase.crashlytics'
 }
 
@@ -58,9 +57,6 @@ android {
         }
     }
 
-    kapt {
-        correctErrorTypes = true
-    }
     namespace 'com.chargingstatusmonitor.souhadev'
 
 
@@ -95,8 +91,6 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    kapt "androidx.room:room-compiler:$room_version"
-
     implementation 'com.google.android.play:review:2.0.1'
 
     // For Kotlin users also add the Kotlin extensions library for Play In-App Review:
@@ -119,7 +113,6 @@ dependencies {
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
 
 
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
     implementation 'com.facebook.android:facebook-android-sdk:15.1.0'
     implementation 'com.google.ads.mediation:facebook:6.12.0.0'
 
@@ -252,4 +245,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-ndk'
     implementation 'com.google.firebase:firebase-analytics'
     implementation "androidx.datastore:datastore-preferences-rxjava3:1.0.0"
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.2'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
 }

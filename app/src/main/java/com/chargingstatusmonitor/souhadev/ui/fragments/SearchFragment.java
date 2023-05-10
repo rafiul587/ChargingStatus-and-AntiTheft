@@ -40,8 +40,7 @@ public class SearchFragment extends Fragment implements RingtonesAdapter.OnItemC
 
     FileDao dao;
     AppDataStore dataStore;
-    NavController navController;
-    MediaPlayer mediaPlayer = new MediaPlayer();
+    MediaPlayer mediaPlayer;
 
     private FragmentSearchBinding binding;
 
@@ -49,9 +48,9 @@ public class SearchFragment extends Fragment implements RingtonesAdapter.OnItemC
                              ViewGroup container, Bundle savedInstanceState) {
 
         binding = FragmentSearchBinding.inflate(inflater, container, false);
+        mediaPlayer = new MediaPlayer();
         dao = ((MyApplication) requireContext().getApplicationContext()).getDao();
         dataStore = ((MyApplication) requireContext().getApplicationContext()).getDataStore();
-        navController = NavHostFragment.findNavController(this);
         adapter = new RingtonesAdapter(fileModels, this);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         binding.recyclerView.setAdapter(adapter);
@@ -131,7 +130,7 @@ public class SearchFragment extends Fragment implements RingtonesAdapter.OnItemC
         if (fileEntity.isLocked()) {
             Bundle bundle = new Bundle();
             bundle.putInt("id", fileEntity.getUid());
-            navController.navigate(R.id.action_navigation_search_to_navigation_unlock, bundle);
+            NavHostFragment.findNavController(this).navigate(R.id.action_navigation_search_to_navigation_unlock, bundle);
         } else {
             if (adapter.getSelectedItem() == position) {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="15dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/soundWithAnimation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Sound with animation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/soundWithAnimationSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:switchMinWidth="70dp"
+        android:textOff="Off"
+        android:textOn="On"
+        android:minHeight="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/soundWithAnimation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/soundWithAnimation" />
+
+    <TextView
+        android:id="@+id/playDuration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Play duration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/soundWithAnimation" />
+
+    <Spinner
+        android:id="@+id/playDurationSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/play_duration_options"
+        app:layout_constraintBottom_toBottomOf="@id/playDuration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/playDuration" />
+
+    <TextView
+        android:id="@+id/closeMethod"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Close method"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/playDuration" />
+
+    <Spinner
+        android:id="@+id/closeMethodSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:entries="@array/close_method_options"
+        app:layout_constraintBottom_toBottomOf="@id/closeMethod"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/closeMethod" />
+
+    <TextView
+        android:id="@+id/showBatterPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Show battery percentage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/closeMethod" />
+
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/batteryPercentageSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:switchMinWidth="70dp"
+        android:textOff="Off"
+        android:textOn="On"
+        android:minHeight="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/showBatterPercentage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/showBatterPercentage"/>
+
+
+    <TextView
+        android:id="@+id/showOnLockScreen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:text="Show on lock screen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showBatterPercentage" />
+
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/showOnLockScreenSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:switchMinWidth="70dp"
+        android:textOff="Off"
+        android:textOn="On"
+        android:minHeight="30dp"
+        app:layout_constraintBottom_toBottomOf="@id/showOnLockScreen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/showOnLockScreen"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

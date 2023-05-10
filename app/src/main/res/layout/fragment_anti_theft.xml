@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:scrollbars="none"
+    android:fillViewport="true"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerCharging"
+            android:layout_width="10dp"
+            android:layout_height="0dp"
+            android:textColor="@color/green_500"
+            android:textSize="16sp"
+            android:background="@drawable/gradient_greenish"
+            app:layout_constraintBottom_toBottomOf="@id/chargingAlarmCard"
+            app:layout_constraintEnd_toStartOf="@id/chargingAlarmCard"
+            app:layout_constraintTop_toTopOf="@id/chargingAlarmCard" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/chargingAlarmCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="30dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/grey_200"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iconCharging"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_charging_alarm" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Charging Alarm"
+                    android:textColor="@color/green_500"
+                    android:textSize="20sp"
+                    android:layout_marginStart="15dp"
+                    app:layout_constraintStart_toEndOf="@id/iconCharging"
+                    app:layout_constraintTop_toTopOf="@id/iconCharging"
+                    app:layout_constraintBottom_toBottomOf="@id/iconCharging"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/chargingAlarmDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Detects when charger is unplugged"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="20dp"
+                    android:layout_marginTop="15dp"
+                    android:textAlignment="center"
+                    android:background="@color/green_500"
+                    app:layout_constraintTop_toBottomOf="@id/iconCharging"
+                    android:textStyle="bold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerTouch"
+            android:layout_width="10dp"
+            android:layout_height="0dp"
+            android:textColor="@color/green_500"
+            android:textSize="16sp"
+            android:background="@drawable/gradient_greenish"
+            app:layout_constraintBottom_toBottomOf="@id/touchAlarmCard"
+            app:layout_constraintEnd_toStartOf="@id/touchAlarmCard"
+            app:layout_constraintTop_toTopOf="@id/touchAlarmCard" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/touchAlarmCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="20dp"
+            app:cardCornerRadius="10dp"
+            app:cardBackgroundColor="@color/grey_200"
+            app:layout_constraintTop_toBottomOf="@id/chargingAlarmCard">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iconTouch"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_touch_alarm" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Do Not Touch Alarm"
+                    android:textColor="@color/green_500"
+                    android:textSize="20sp"
+                    android:layout_marginStart="15dp"
+                    app:layout_constraintStart_toEndOf="@id/iconTouch"
+                    app:layout_constraintTop_toTopOf="@id/iconTouch"
+                    app:layout_constraintBottom_toBottomOf="@id/iconTouch"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/touchAlarmDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Detects when someone touches your phone"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="20dp"
+                    android:layout_marginTop="15dp"
+                    android:textAlignment="center"
+                    android:background="@color/green_500"
+                    app:layout_constraintTop_toBottomOf="@id/iconTouch"
+                    android:textStyle="bold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/dividerPocket"
+            android:layout_width="10dp"
+            android:layout_height="0dp"
+            android:textColor="@color/green_500"
+            android:textSize="16sp"
+            android:background="@drawable/gradient_greenish"
+            app:layout_constraintBottom_toBottomOf="@id/pocketAlarmCard"
+            app:layout_constraintEnd_toStartOf="@id/pocketAlarmCard"
+            app:layout_constraintTop_toTopOf="@id/pocketAlarmCard" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/pocketAlarmCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="30dp"
+            app:cardCornerRadius="10dp"
+            android:layout_marginTop="20dp"
+            app:cardBackgroundColor="@color/grey_200"
+            app:layout_constraintTop_toBottomOf="@id/touchAlarmCard">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iconPocket"
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:layout_margin="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_anti_pocket_alarm" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Anti Pocket Alarm"
+                    android:textColor="@color/green_500"
+                    android:textSize="20sp"
+                    android:layout_marginStart="15dp"
+                    app:layout_constraintStart_toEndOf="@id/iconPocket"
+                    app:layout_constraintTop_toTopOf="@id/iconPocket"
+                    app:layout_constraintBottom_toBottomOf="@id/iconPocket"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/pocketAlarmDes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Detects when phone is removed from pocket"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:padding="20dp"
+                    android:layout_marginTop="15dp"
+                    android:textAlignment="center"
+                    android:background="@color/green_500"
+                    app:layout_constraintTop_toBottomOf="@id/iconPocket"
+                    android:textStyle="bold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/middleGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

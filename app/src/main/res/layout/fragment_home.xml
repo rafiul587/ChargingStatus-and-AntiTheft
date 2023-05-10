@@ -1,74 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:paddingBottom="56dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_margin="15dp">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/home_screen_instructions"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:lineSpacingMultiplier="1.6"
-        android:textSize="20sp"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
-    <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/on_connect_underline"
+        android:text="Quick Access"
+        android:textColor="@color/green_500"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/chargingAlarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/chargingAlarm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:padding="10dp"
+        android:text="Charging Alarm"
+        android:textColor="@color/black"
         android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        app:layout_constraintBottom_toTopOf="@+id/chargingAnimation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
-
-    <TextView
-        android:id="@+id/connectFile"
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/chargingAlarmSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="20sp"/>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp"/>
+        android:minHeight="30dp"
+        android:textOff="Off"
+        android:textOn="On"
+        app:layout_constraintBottom_toBottomOf="@id/chargingAlarm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chargingAlarm"
+        app:switchMinWidth="70dp" />
 
     <TextView
-        android:textColor="@color/black"
+        android:id="@+id/chargingAnimation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/on_disconnect_underline"
+        android:padding="10dp"
+        android:text="Charging Animation"
+        android:textColor="@color/black"
         android:textSize="20sp"
-        android:textStyle="bold"/>
+        app:layout_constraintBottom_toTopOf="@+id/antiTheftProtection"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chargingAlarm" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp"/>
-
-    <TextView
-        android:id="@+id/disconnectFile"
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/chargingAnimationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:minHeight="30dp"
+        android:textOff="Off"
+        android:textOn="On"
+        app:layout_constraintBottom_toBottomOf="@id/chargingAnimation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/chargingAnimation"
+        app:switchMinWidth="70dp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/startService"
+
+    <TextView
+        android:id="@+id/antiTheftProtection"
         android:layout_width="wrap_content"
-        android:text="@string/start_service_btn_text"
-        android:paddingHorizontal="40dp"
-        android:paddingVertical="8dp"
-        android:background="@drawable/bg_button"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="Anti-theft Protection"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/startOrStopServiceSwitch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chargingAnimation" />
+
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/antiTheftProtectionSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:textOff="Off"
+        android:textOn="On"
+        app:layout_constraintBottom_toBottomOf="@id/antiTheftProtection"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/antiTheftProtection"
+        app:switchMinWidth="70dp" />
+
+    <TextView
+        android:id="@+id/startServiceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Service"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/startOrStopServiceSwitch"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.chargingstatusmonitor.SwitchCompatEx
+        android:id="@+id/startOrStopServiceSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="30dp"
+        android:textOff="Off"
+        android:textOn="On"
+        app:layout_constraintBottom_toBottomOf="@id/startServiceText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/startServiceText"
+        app:layout_constraintTop_toTopOf="@id/startServiceText"
+        app:switchMinWidth="70dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

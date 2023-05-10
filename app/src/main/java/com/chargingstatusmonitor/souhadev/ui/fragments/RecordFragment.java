@@ -37,10 +37,6 @@ public class RecordFragment extends Fragment {
 
         voiceRecordFragment = new VoiceRecordFragment();
         myRecordsFragment = new MyRecordsFragment();
-        if (PermissionUtils.hasPermissions(requireContext(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO})) {
-        } else {
-            requestPermissions();
-        }
         replaceFragment(voiceRecordFragment);
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Voice Recorder"), true);
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("My Records"));
@@ -77,30 +73,6 @@ public class RecordFragment extends Fragment {
         FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.setReorderingAllowed(true).replace(R.id.fragmentContainerView, fragment).commit();
-    }
-
-    public void requestPermissions() {
-        if (shouldShowRequestPermissionRationale(Manifest.permission.RECORD_AUDIO)) {
-            PermissionUtils.shouldShowPermissionRationale(this, Manifest.permission.RECORD_AUDIO, RECORD_PERMISSION_REQUEST_CODE, "This app needs access to your microphone to record your voice.");
-        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            PermissionUtils.shouldShowPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE, RECORD_PERMISSION_REQUEST_CODE, "We need write permission for saving anything to the storage!");
-        } else
-            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE}, RECORD_PERMISSION_REQUEST_CODE);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == RECORD_PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0) {
-                // check whether storage permission granted or not.
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // do what you want;
-                } else {
-
-                }
-            }
-        }
     }
 
     @Override

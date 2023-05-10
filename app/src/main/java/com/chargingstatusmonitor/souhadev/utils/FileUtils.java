@@ -101,7 +101,7 @@ public class FileUtils {
         onConnectButton.setOnClickListener(v -> {
             AppExecutors.getInstance().networkIO().execute(() -> {
                 // perform IO operation on a separate thread
-                dataStore.saveOnConnectFile(fileType + "-" + fileName);
+                dataStore.saveStringValue(AppDataStore.CONNECT_FILE_KEY, fileType + Constants.SPLITTER + fileName);
                 new Handler(Looper.getMainLooper()).post(dialog::dismiss);
             });
         });
@@ -109,7 +109,7 @@ public class FileUtils {
         onDisconnectButton.setOnClickListener(v -> {
             AppExecutors.getInstance().networkIO().execute(() -> {
                 // perform IO operation on a separate thread
-                dataStore.saveOnDisconnectFile(fileType + "-" + fileName);
+                dataStore.saveStringValue(AppDataStore.DISCONNECT_FILE_KEY, fileType + Constants.SPLITTER + fileName);
                 new Handler(Looper.getMainLooper()).post(dialog::dismiss);
             });
         });

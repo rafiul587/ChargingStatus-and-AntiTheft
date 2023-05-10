@@ -1,59 +1,48 @@
-package com.chargingstatusmonitor.souhadev.ui.fragments;
+package com.chargingstatusmonitor.souhadev;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.chargingstatusmonitor.souhadev.BuildConfig;
-import com.chargingstatusmonitor.souhadev.Continue;
-import com.chargingstatusmonitor.souhadev.R;
-import com.chargingstatusmonitor.souhadev.databinding.FragmentSettingsBinding;
+import com.chargingstatusmonitor.souhadev.databinding.ActivitySearchBinding;
+import com.chargingstatusmonitor.souhadev.databinding.ActivitySettingsBinding;
 import com.google.android.play.core.review.ReviewManager;
 import com.google.android.play.core.review.ReviewManagerFactory;
 
-public class SettingsFragment extends Fragment {
+public class SettingsActivity extends AppCompatActivity {
 
-    private FragmentSettingsBinding binding;
-
-    public SettingsFragment() {
-        // Required empty public constructor
-    }
-    
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentSettingsBinding.inflate(inflater, container, false);
-        ReviewManager reviewManager = ReviewManagerFactory.create(requireContext());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ActivitySettingsBinding binding = ActivitySettingsBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        ReviewManager reviewManager = ReviewManagerFactory.create(this);
 
         binding.versionNo.setText(BuildConfig.VERSION_NAME);
 
         binding.rateUs.setOnClickListener(v -> {
             Continue.count_rate++;
             if (Continue.count_rate > 1) {
-                rateApp(requireContext());
+                rateApp(this);
             } else {
                 reviewManager.requestReviewFlow().addOnCompleteListener(it -> {
                     if (it.isSuccessful()) {
-                        reviewManager.launchReviewFlow(requireActivity(), it.getResult());
+                        reviewManager.launchReviewFlow(this, it.getResult());
                     }
                 });
             }
         });
         binding.share.setOnClickListener(v -> {
-            shareApp(requireContext());
+            shareApp(this);
         });
         binding.moreApps.setOnClickListener(v -> {
-            showMoreApps(requireContext());
+            showMoreApps(this);
         });
-        return binding.getRoot();
     }
 
 
@@ -79,12 +68,5 @@ public class SettingsFragment extends Fragment {
         String urlStrRateUs;
         urlStrRateUs = "market://details?id=" + context.getPackageName();
         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(urlStrRateUs)));
-    }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
     }
 }

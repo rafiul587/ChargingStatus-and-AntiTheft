@@ -24,6 +24,7 @@
     <string name="request_permission">Request permission</string>
     <string name="download_success">File downloaded successfully</string>
     <string name="asset_folder_name">ringtones</string>
+    <string name="alarm_folder_name">alarm</string>
     <string name="download_folder_name">ChargingStatus Download</string>
     <string name="download_screen_title">Download</string>
     <string name="home_screen_title">Home</string>
@@ -63,4 +64,22 @@
     <string name="start_service_btn_text">Start Detecting</string>
     <string name="stop_service_btn_text">Stop Detecting</string>
     <string name="saved_successfully">File saved successfully</string>
+    <string name="battery_info_screen_title">Battery Info</string>
+    <string name="charging_animation_screen_title">Animation</string>
+    <string name="anti_theft_screen_title">Anti Theft Alarm</string>
+    <string name="battery_health_cold">Cold</string>
+    <string name="battery_health_dead">Dead</string>
+    <string name="battery_health_good">Good</string>
+    <string name="battery_health_over_voltage">Over Voltage</string>
+    <string name="battery_health_overheat">Overheat</string>
+    <string name="battery_health_unspecified_failure">Unspecified</string>
+    <string name="battery_status_discharging">Discharging</string>
+    <string name="battery_status_charging">Charging</string>
+    <string name="battery_status_unknown">Unknown</string>
+    <string name="battery_status_full">Battery Full</string>
+    <string name="battery_health_unknown">Unknown</string>
+    <string name="battery_plugged_none">None</string>
+    <string name="battery_plugged_wireless">Wireless</string>
+    <string name="battery_plugged_usb">USB</string>
+    <string name="battery_plugged_ac">AC</string>
 </resources>

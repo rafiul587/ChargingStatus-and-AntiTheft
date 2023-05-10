@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.chargingstatusmonitor.souhadev.AppExecutors;
 import com.chargingstatusmonitor.souhadev.MyApplication;
@@ -16,12 +17,13 @@ import com.chargingstatusmonitor.souhadev.R;
 import com.chargingstatusmonitor.souhadev.data.FileDao;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentUnlockBinding;
 
+import java.util.Objects;
+
 public class UnlockFragment extends Fragment {
     private FragmentUnlockBinding binding;
 
     private FileDao dao;
     private int id;
-
     public UnlockFragment() {
         // Required empty public constructor
     }
@@ -51,9 +53,7 @@ public class UnlockFragment extends Fragment {
                 }
             });
         });
-        binding.ok.setOnClickListener(v -> {
-            Navigation.findNavController(v).popBackStack();
-        });
+        binding.ok.setOnClickListener(v -> Navigation.findNavController(v).popBackStack());
         return binding.getRoot();
     }
 

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbars="none"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/batteryHealthLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/border_card_view"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="15dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/healthTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Battery Health"
+                android:textColor="@color/green_500"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/health"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Good"
+                android:textColor="@color/green_200"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/healthTitle" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="4dp"
+                android:src="@drawable/material_symbols_ecg_heart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/healthTitle"
+                app:tint="@color/green_500" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/statusLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/border_card_view"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="@id/middleGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/batteryHealthLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Status"
+                android:textColor="@color/green_500"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="4dp"
+                android:src="@drawable/ic_battery_capacity"
+                app:tint="@color/green_500" />
+
+            <TextView
+                android:id="@+id/status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Charging"
+                android:textColor="@color/green_200"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/chargingTypeLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/border_card_view"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="@id/middleGuideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/statusLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Charging Type"
+                android:textColor="@color/green_500"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:padding="4dp"
+                android:src="@drawable/baseline_electric_bolt_24"
+                app:tint="@color/green_500" />
+
+            <TextView
+                android:id="@+id/chargingType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="USB"
+                android:textColor="@color/green_200"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/batteryLevelLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/border_card_view"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintBottom_toBottomOf="@id/chargingTypeLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/middleGuideline"
+            app:layout_constraintTop_toTopOf="@id/statusLayout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Battery Level"
+                android:textColor="@color/green_500"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/batteryLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="80%"
+                android:textColor="@color/green_200"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.chargingstatusmonitor.souhadev.WaveLoadingView
+                android:id="@+id/batteryLevelWave"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                app:wlv_borderColor="@color/black"
+                app:wlv_borderWidth="4dp"
+                app:wlv_progressValue="90"
+                app:wlv_round_rectangle="true"
+                app:wlv_shapeType="rectangle"
+                app:wlv_triangle_direction="north"
+                app:wlv_waveAmplitude="20"
+                app:wlv_waveColor="@color/green_200"
+                app:wlv_wave_background_Color="@color/white" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/moreInfoLayout"
+            layout="@layout/fragment_battery_more_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chargingTypeLayout" />
+
+        <ImageButton
+            android:id="@+id/expandOrCollapse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@android:color/transparent"
+            android:contentDescription="Expand Button"
+            android:rotation="-90"
+            android:src="@drawable/baseline_arrow_back_ios_new_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/moreInfoLayout" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/middleGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent=".5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

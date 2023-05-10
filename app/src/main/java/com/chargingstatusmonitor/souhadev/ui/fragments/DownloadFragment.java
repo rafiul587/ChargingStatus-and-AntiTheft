@@ -34,11 +34,13 @@ import com.chargingstatusmonitor.souhadev.RingtonesAdapter;
 import com.chargingstatusmonitor.souhadev.data.FileDao;
 import com.chargingstatusmonitor.souhadev.data.FileEntity;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentDownloadBinding;
+import com.chargingstatusmonitor.souhadev.utils.Constants;
 import com.chargingstatusmonitor.souhadev.utils.FileType;
 import com.chargingstatusmonitor.souhadev.utils.PermissionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class DownloadFragment extends Fragment implements RingtonesAdapter.OnItemClickAction {
@@ -71,6 +73,7 @@ public class DownloadFragment extends Fragment implements RingtonesAdapter.OnIte
             fileModels.addAll(fileEntities);
             adapter.notifyDataSetChanged();
         });
+
         return binding.getRoot();
     }
 
@@ -83,6 +86,9 @@ public class DownloadFragment extends Fragment implements RingtonesAdapter.OnIte
         }
     }
 
+
+
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -93,7 +99,7 @@ public class DownloadFragment extends Fragment implements RingtonesAdapter.OnIte
     @Override
     public void onSetRingtoneClick(int position) {
         FileEntity fileEntity = fileModels.get(position);
-        showDialog(requireContext(), dataStore, fileEntity.getName(), FileType.ASSET + "-" + fileEntity.getUri());
+        showDialog(requireContext(), dataStore, fileEntity.getName(), FileType.ASSET + Constants.SPLITTER + fileEntity.getUri());
     }
 
     @Override
@@ -113,8 +119,7 @@ public class DownloadFragment extends Fragment implements RingtonesAdapter.OnIte
         if (fileEntity.isLocked()) {
             Bundle bundle = new Bundle();
             bundle.putInt("id", fileEntity.getUid());
-
-            navController.navigate(R.id.action_navigation_download_to_navigation_unlock, bundle);
+            navController.navigate(R.id.action_to_navigation_unlock, bundle);
         } else {
             if (adapter.getSelectedItem() == position) {
                 if (mediaPlayer != null && mediaPlayer.isPlaying()) {

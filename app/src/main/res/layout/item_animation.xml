@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/animation_card_view"
+    android:gravity="center"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/gifImageView"
+        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:padding="4dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_loading"
+        app:tint="@color/green_500" />
+
+    <ImageView
+        android:id="@+id/download"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/baseline_cloud_download_24"
+        android:layout_gravity="bottom|end"
+        app:tint="@color/green_200" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/downloadProgress"
+        android:indeterminate="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:indicatorSize="24dp"
+        android:progress="0"
+        android:max="100"
+        app:trackColor="@color/green_500"
+        app:indicatorColor="@color/white"
+        android:visibility="gone"
+        android:layout_gravity="bottom|start"/>
+
+</FrameLayout>

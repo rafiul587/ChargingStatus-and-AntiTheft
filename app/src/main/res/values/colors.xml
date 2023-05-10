@@ -19,4 +19,7 @@
     <color name="colorAccentDark">#FFFF085C</color>
     <color name="red">#ffe56155</color>
     <color name="brown">#ff62503a</color>
+    <color name="green_200">#39B54A</color>
+    <color name="green_500">#006837</color>
+    <color name="green_700">#1F530F</color>
 </resources>

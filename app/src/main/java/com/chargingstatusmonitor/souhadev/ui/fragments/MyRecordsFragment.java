@@ -35,6 +35,7 @@ import com.chargingstatusmonitor.souhadev.MyRecordsAdapter;
 import com.chargingstatusmonitor.souhadev.R;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentMyRecordsBinding;
 import com.chargingstatusmonitor.souhadev.model.FileModel;
+import com.chargingstatusmonitor.souhadev.utils.Constants;
 import com.chargingstatusmonitor.souhadev.utils.FileType;
 import com.chargingstatusmonitor.souhadev.utils.PermissionUtils;
 
@@ -193,6 +194,6 @@ public class MyRecordsFragment extends Fragment implements MyRecordsAdapter.OnIt
     @Override
     public void onSetRingtoneClick(int position) {
         FileModel file = records.get(position);
-        showDialog(requireContext(), dataStore, file.getName(), FileType.RECORD + "-" + file.getPath());
+        showDialog(requireContext(), dataStore, file.getName(), FileType.RECORD + Constants.SPLITTER + file.getPath());
     }
 }

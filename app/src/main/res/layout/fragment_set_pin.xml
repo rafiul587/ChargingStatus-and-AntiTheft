@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginHorizontal="15dp"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/setPinText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set your pin"
+        android:textColor="@color/green_700"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        app:dividerColor="@color/green_500"
+        app:layout_constraintEnd_toEndOf="@id/setPinText"
+        app:layout_constraintStart_toStartOf="@id/setPinText"
+        app:layout_constraintTop_toBottomOf="@id/setPinText" />
+
+    <TextView
+        android:id="@+id/description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/green_200"
+        app:layout_constraintTop_toBottomOf="@id/setPinText"
+        android:text="This pin will be used to stop alarms. Don't forget the pin!"/>
+
+    <TextView
+        android:id="@+id/textEnterCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="20dp"
+        android:text="Enter your code"
+        android:textColor="@color/green_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/description" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/codeEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/border_gradient_greenish"
+        android:gravity="center"
+        android:hint="****"
+        android:inputType="numberPassword"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="15dp"
+        android:textColor="@color/green_500"
+        android:textColorHint="@color/green_500"
+        android:maxLength="4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textEnterCode" />
+
+    <TextView
+        android:id="@+id/textConfirmCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="10dp"
+        android:text="Confirm code"
+        android:textColor="@color/green_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/codeEditText" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/confirmEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/border_gradient_greenish"
+        android:gravity="center"
+        android:hint="****"
+        android:maxLength="4"
+        android:inputType="numberPassword"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="15dp"
+        android:textColor="@color/green_500"
+        android:textColorHint="@color/green_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textConfirmCode" />
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/confirmEditText"
+        app:layout_constraintTop_toBottomOf="@id/confirmEditText"
+        tools:text="Confirmation code didn't match!"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="5dp"
+        android:visibility="gone"
+        android:textColor="@color/red"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/bg_button_gradient_greenish"
+        android:minHeight="0dp"
+        android:paddingVertical="15dp"
+        android:text="Confirm"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/error" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

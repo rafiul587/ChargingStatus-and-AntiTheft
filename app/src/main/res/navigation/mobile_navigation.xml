@@ -12,67 +12,121 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_ringtone"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.RingtoneFragment"
-        android:label="@string/ringtone_screen_title"
-        tools:layout="@layout/fragment_ringtone" >
-        <action
-            android:id="@+id/action_navigation_ringtone_to_navigation_phone"
-            app:destination="@id/navigation_phone" />
-        <action
-            android:id="@+id/action_navigation_ringtone_to_navigation_download"
-            app:destination="@id/navigation_download" />
-        <action
-            android:id="@+id/action_navigation_ringtone_to_navigation_record"
-            app:destination="@id/navigation_record" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_search"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.SearchFragment"
-        android:label="@string/search_screen_title"
-        tools:layout="@layout/fragment_search" >
-        <action
-            android:id="@+id/action_navigation_search_to_navigation_unlock"
-            app:destination="@id/navigation_unlock" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.SettingsFragment"
-        android:label="@string/settings_screen_title"
-        tools:layout="@layout/fragment_settings" />
-
-    <fragment
-        android:id="@+id/navigation_phone"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.PhoneFragment"
-        android:label="@string/phone_screen_title"
-        tools:layout="@layout/fragment_phone" >
-        <action
-            android:id="@+id/action_navigation_phone_to_navigation_unlock"
-            app:destination="@id/navigation_unlock" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_download"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.DownloadFragment"
-        android:label="@string/download_screen_title"
-        tools:layout="@layout/fragment_download" >
-        <action
-            android:id="@+id/action_navigation_download_to_navigation_unlock"
-            app:destination="@id/navigation_unlock" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/navigation_record"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.RecordFragment"
-        android:label="@string/record_screen_title"
-        tools:layout="@layout/fragment_record" />
+        android:id="@+id/navigation_battery_info"
+        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.batteryinfo.BatteryInfoFragment"
+        android:label="@string/battery_info_screen_title"
+        tools:layout="@layout/fragment_battery_more_info" />
 
     <fragment
         android:id="@+id/navigation_unlock"
         android:name="com.chargingstatusmonitor.souhadev.ui.fragments.UnlockFragment"
         android:label="@string/unlock_screen_title"
         tools:layout="@layout/fragment_unlock" />
+
+    <action
+        android:id="@+id/action_to_navigation_unlock"
+        app:destination="@id/navigation_unlock" />
+
+    <navigation android:id="@+id/navigation_ringtone_graph"
+        app:startDestination="@id/navigation_ringtone">
+        <fragment
+            android:id="@+id/navigation_ringtone"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.RingtoneFragment"
+            android:label="@string/ringtone_screen_title"
+            tools:layout="@layout/fragment_ringtone">
+            <action
+                android:id="@+id/action_navigation_ringtone_to_navigation_phone"
+                app:destination="@id/navigation_phone" />
+            <action
+                android:id="@+id/action_navigation_ringtone_to_navigation_download"
+                app:destination="@id/navigation_download" />
+            <action
+                android:id="@+id/action_navigation_ringtone_to_navigation_record"
+                app:destination="@id/navigation_record" />
+        </fragment>
+        <fragment
+            android:id="@+id/navigation_phone"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.PhoneFragment"
+            android:label="@string/phone_screen_title"
+            tools:layout="@layout/fragment_phone"/>
+        <fragment
+            android:id="@+id/navigation_download"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.DownloadFragment"
+            android:label="@string/download_screen_title"
+            tools:layout="@layout/fragment_download"/>
+        <fragment
+            android:id="@+id/navigation_record"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.RecordFragment"
+            android:label="@string/record_screen_title"
+            tools:layout="@layout/fragment_record" />
+    </navigation>
+    <navigation android:id="@+id/navigation_animation_graph"
+        app:startDestination="@id/navigation_animation_list">
+        <fragment
+            android:id="@+id/navigation_animation_list"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.charginganimation.AnimationListFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_charging_animation" >
+            <action
+                android:id="@+id/action_navigation_animation_list_to_navigation_apply_animation"
+                app:destination="@id/navigation_apply_animation" />
+        </fragment>
+        <fragment
+            android:id="@+id/navigation_apply_animation"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.charginganimation.ApplyAnimationFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_apply_animation" >
+            <action
+                android:id="@+id/action_navigation_apply_animation_to_navigation_animation_settings"
+                app:destination="@id/navigation_animation_settings" />
+        </fragment>
+        <fragment
+            android:id="@+id/navigation_animation_settings"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.charginganimation.AnimationSettingsFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_animation_settings" />
+    </navigation>
+    <navigation android:id="@+id/navigation_anti_theft_graph"
+        app:startDestination="@id/navigation_anti_theft">
+        <fragment
+            android:id="@+id/navigation_set_pin"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.SetPinFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_set_pin" >
+        </fragment>
+        <fragment
+            android:id="@+id/navigation_anti_theft"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.AntiTheftFragment"
+            android:label="@string/anti_theft_screen_title"
+            tools:layout="@layout/fragment_anti_theft" >
+            <action
+                android:id="@+id/action_navigation_anti_theft_to_navigation_charging_alarm"
+                app:destination="@id/navigation_charging_alarm" />
+            <action
+                android:id="@+id/action_navigation_anti_theft_to_navigation_touch_alarm"
+                app:destination="@id/navigation_touch_alarm" />
+            <action
+                android:id="@+id/action_navigation_anti_theft_to_navigation_anti_pocket_alarm"
+                app:destination="@id/navigation_anti_pocket_alarm" />
+            <action
+                android:id="@+id/action_navigation_anti_theft_to_navigation_set_pin"
+                app:destination="@id/navigation_set_pin" />
+        </fragment>
+        <fragment
+            android:id="@+id/navigation_charging_alarm"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.ChargingAlarmFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_charging_alarm" />
+        <fragment
+            android:id="@+id/navigation_touch_alarm"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.TouchAlarmFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_touch_alarm" />
+        <fragment
+            android:id="@+id/navigation_anti_pocket_alarm"
+            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.AntiPocketAlarmFragment"
+            android:label="@string/charging_animation_screen_title"
+            tools:layout="@layout/fragment_anti_pocket_alarm" />
+    </navigation>
 
 </navigation>
