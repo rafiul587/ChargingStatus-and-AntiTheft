@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.fragments.VoiceRecordFragment">
+    tools:context=".ui.sounds.VoiceRecordFragment">
 
     <TextView
         android:id="@+id/timer"

@@ -46,13 +46,15 @@
                     android:src="@drawable/ic_charging_alarm" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Charging Alarm"
+                    android:text="@string/charger_unplugged_alarm"
                     android:textColor="@color/green_500"
                     android:textSize="20sp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginHorizontal="15dp"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintStart_toEndOf="@id/iconCharging"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/iconCharging"
                     app:layout_constraintBottom_toBottomOf="@id/iconCharging"
                     android:textStyle="bold" />
@@ -61,7 +63,7 @@
                     android:id="@+id/chargingAlarmDes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Detects when charger is unplugged"
+                    android:text="@string/charger_unplugged_alarm_desc"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -114,13 +116,15 @@
                     android:src="@drawable/ic_touch_alarm" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Do Not Touch Alarm"
+                    android:text="@string/do_not_touch_alarm"
                     android:textColor="@color/green_500"
                     android:textSize="20sp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginHorizontal="15dp"
                     app:layout_constraintStart_toEndOf="@id/iconTouch"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constrainedWidth="true"
                     app:layout_constraintTop_toTopOf="@id/iconTouch"
                     app:layout_constraintBottom_toBottomOf="@id/iconTouch"
                     android:textStyle="bold" />
@@ -129,7 +133,7 @@
                     android:id="@+id/touchAlarmDes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Detects when someone touches your phone"
+                    android:text="@string/touch_alarm_desc"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -182,13 +186,14 @@
                     android:src="@drawable/ic_anti_pocket_alarm" />
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Anti Pocket Alarm"
+                    android:text="@string/anti_pocket_alarm"
                     android:textColor="@color/green_500"
                     android:textSize="20sp"
-                    android:layout_marginStart="15dp"
+                    android:layout_marginHorizontal="15dp"
                     app:layout_constraintStart_toEndOf="@id/iconPocket"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/iconPocket"
                     app:layout_constraintBottom_toBottomOf="@id/iconPocket"
                     android:textStyle="bold" />
@@ -197,7 +202,7 @@
                     android:id="@+id/pocketAlarmDes"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Detects when phone is removed from pocket"
+                    android:text="@string/anti_pocket_alarm_desc"
                     android:textColor="@color/white"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

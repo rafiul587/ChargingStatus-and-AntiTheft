@@ -1,22 +1,20 @@
 package com.chargingstatusmonitor.souhadev.model;
 
-import com.google.firebase.storage.StorageReference;
-
 public class AnimationModel {
-    StorageReference animation;
+    String name;
     int progress = -1;
 
-    public AnimationModel(StorageReference animation, int progress) {
-        this.animation = animation;
+    public AnimationModel(String name, int progress) {
+        this.name = name;
         this.progress = progress;
     }
 
-    public StorageReference getAnimation() {
-        return animation;
+    public String getName() {
+        return name;
     }
 
-    public void setAnimation(StorageReference animation) {
-        this.animation = animation;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getProgress() {

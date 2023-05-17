@@ -6,12 +6,13 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
     <uses-permission android:name="android.permission.Ad_ID" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -25,15 +26,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AnimationActivity"
-            android:launchMode="singleInstance"
-            android:exported="false" />
+            android:name=".ui.activities.AnimationActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".AlarmActivity"
-            android:launchMode="singleInstance"
-            android:exported="false" />
+            android:name=".ui.activities.AlarmActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".StartActivity"
+            android:name=".ui.activities.StartActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
             android:screenOrientation="portrait">
@@ -44,16 +49,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="false"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" /> <!-- TRADPLUS -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
         <activity
-            android:name=".Splash"
+            android:name=".ui.activities.Splash"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
@@ -71,15 +77,26 @@
             android:exported="true"
             tools:ignore="Instantiatable,MissingClass" />
         <activity
-            android:name=".Continue"
+            android:name=".ui.activities.Continue"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ChargingStatus" />
         <activity
             android:name=".snake.MainActivity_Snake"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="portrait"
             android:exported="true" />
-        <activity android:name=".ui.fragments.GuideScreenActivity" />
-        <activity android:name=".SearchActivity" />
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".ui.guideline.GuideScreenActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.SearchActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
+            android:screenOrientation="portrait" />
 
         <service android:name=".utils.MyService" />
 

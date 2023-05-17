@@ -15,40 +15,42 @@
 
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textColor="@color/black"
         android:layout_marginTop="20dp"
+        android:textAlignment="center"
         android:text="@string/select_the_type" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/onConnectButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_rectangle_button_gradient_greenish"
             android:text="@string/on_connect"
             android:textAllCaps="true"
-            android:textColor="@color/white"
+            android:textColor="@color/green_500"
             android:layout_marginHorizontal="20dp"
             android:textStyle="bold" />
 
-        <com.google.android.material.button.MaterialButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/onDisconnectButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_rectangle_button_gradient_greenish"
             android:text="@string/on_disconnect"
             android:textAllCaps="true"
             android:layout_marginTop="10dp"
             android:layout_marginHorizontal="20dp"
-            android:textColor="@color/white"
+            android:textColor="@color/green_500"
             android:textStyle="bold" />
 
     </LinearLayout>

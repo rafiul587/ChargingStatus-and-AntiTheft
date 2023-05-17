@@ -19,8 +19,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.chargingstatusmonitor.souhadev.AppDataStore;
-import com.chargingstatusmonitor.souhadev.AppExecutors;
+import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.R;
 
 import java.io.File;
@@ -130,9 +129,9 @@ public class FileUtils {
             mediaPlayer.setOnPreparedListener(MediaPlayer::start);
         } catch (Exception e) {
             if (e.getMessage() != null && e.getMessage().contains("EACCES")) {
-                Toast.makeText(context, "Permission Denied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.permission_denied), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "Failed to play!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.falied_to_play), Toast.LENGTH_SHORT).show();
             }
         }
     }

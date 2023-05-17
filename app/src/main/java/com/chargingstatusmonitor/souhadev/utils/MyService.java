@@ -1,18 +1,20 @@
 package com.chargingstatusmonitor.souhadev.utils;
 
-import static com.chargingstatusmonitor.souhadev.AppDataStore.ALARM_CLOSING_PIN;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.ANTI_POCKET_ALARM;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.ANTI_THEFT_PROTECTION;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.CHARGING_ALARM;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.CHARGING_ANIMATION;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.CLOSE_METHOD;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.DISCHARGING_ALARM;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.PLAY_DURATION;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.SELECTED_ANIMATION_NAME;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.SHOW_BATTERY_PERCENTAGE;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.SHOW_ON_LOCK_SCREEN;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.SOUND_WITH_ANIMATION;
-import static com.chargingstatusmonitor.souhadev.AppDataStore.TOUCH_ALARM;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.ALARM_CLOSING_PIN;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.ANTI_POCKET_ALARM;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.ANTI_THEFT_PROTECTION;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.CHARGING_ALARM;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.CHARGING_ANIMATION;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.CLOSE_METHOD;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.UNPLUGGED_ALARM;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.PLAY_DURATION;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SELECTED_ANIMATION_NAME;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SHOW_BATTERY_PERCENTAGE;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SHOW_ON_LOCK_SCREEN;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SOUND_WITH_ANIMATION;
+import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.TOUCH_ALARM;
+import static com.chargingstatusmonitor.souhadev.utils.Constants.CHANNEL_ID;
+import static com.chargingstatusmonitor.souhadev.utils.Constants.MOVEMENT_THRESHOLD;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -23,7 +25,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.AssetFileDescriptor;
-import android.graphics.PixelFormat;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -31,38 +32,25 @@ import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.PowerManager;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.os.VibratorManager;
 import android.util.Log;
 import android.util.Pair;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.WindowInsets;
-import android.view.WindowInsetsController;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.datastore.preferences.core.Preferences;
 
-import com.chargingstatusmonitor.souhadev.AlarmActivity;
-import com.chargingstatusmonitor.souhadev.AnimationActivity;
-import com.chargingstatusmonitor.souhadev.AppDataStore;
-import com.chargingstatusmonitor.souhadev.AppExecutors;
-import com.chargingstatusmonitor.souhadev.LockScreenReceiver;
-import com.chargingstatusmonitor.souhadev.MainActivity;
+import com.chargingstatusmonitor.souhadev.ui.activities.AlarmActivity;
+import com.chargingstatusmonitor.souhadev.ui.activities.AnimationActivity;
+import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
+import com.chargingstatusmonitor.souhadev.ui.activities.MainActivity;
 import com.chargingstatusmonitor.souhadev.MyApplication;
-import com.chargingstatusmonitor.souhadev.PassCodeView;
 import com.chargingstatusmonitor.souhadev.R;
 import com.chargingstatusmonitor.souhadev.model.PreferenceModel;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -74,22 +62,16 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MyService extends Service implements SensorEventListener {
 
     private static final int NOTIFICATION_ID = 10001;
+
     MediaPlayer mediaPlayer;
     private PowerDisconnectedReceiver disconnectedReceiver;
     private PowerConnectedReceiver connectedReceiver;
     private CompositeDisposable disposable = new CompositeDisposable();
     private SensorManager sensorManager;
-    private static final float THRESHOLD = 2.8f;
+
     private float[] gravity;
     private float[] linearAcceleration;
-
-    float rp = -1;
-    float rl = -1;
     float[] g = {0, 0, 0};
-    int inclination = -1;
-
-    int pocket = 0;
-
     AppDataStore dataStore;
 
     private boolean isChargingAnimationEnabled = true;
@@ -100,15 +82,27 @@ public class MyService extends Service implements SensorEventListener {
     private boolean isAntiTheftAlarmEnabled = false;
     private boolean isSoundWithAnimationEnabled = true;
     private boolean isShowBatteryPercentageEnabled = true;
-    private boolean isShowOnLockScreenEnabled = false;
+    Sensor proximity;
     private String alarmClosingPing = "";
     private String selectedAnimation = "";
     private int playDuration = 0;
     private int closeMethod = 0;
     private PreferenceModel connectPreference;
     private PreferenceModel disconnectPreference;
-    private final boolean shouldPlayAlarm = false;
+
+    Vibrator vibrator;
+    VibratorManager vibratorManager;
+
+    private boolean isAlarmShowing = false;
     boolean isPocket = false;
+
+    private float[] mGravity;
+    private float mAccel;
+    private float mAccelCurrent;
+    private float mAccelLast;
+
+    private final Object lock = new Object();
+
 
     LockScreenReceiver lockScreenReceiver;
 
@@ -123,21 +117,27 @@ public class MyService extends Service implements SensorEventListener {
         dataStore = ((MyApplication) getApplicationContext()).getDataStore();
         disposable = new CompositeDisposable();
         createNotificationChannel();
+        if (Build.VERSION.SDK_INT >= 31) {
+            vibratorManager = (VibratorManager) getSystemService(Context.VIBRATOR_MANAGER_SERVICE);
+            vibrator = vibratorManager.getDefaultVibrator();
+        } else {
+            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        }
         Flowable<String> onConnectFileObservable = dataStore.getOnConnectFile();
         Flowable<String> onDisconnectFileObservable = dataStore.getOnDisconnectFile();
         disposable.add(getBooleanDisposable(CHARGING_ANIMATION, true));
         disposable.add(getBooleanDisposable(CHARGING_ALARM, false));
-        disposable.add(getBooleanDisposable(DISCHARGING_ALARM, true));
-        disposable.add(getBooleanDisposable(TOUCH_ALARM, true));
-        disposable.add(getBooleanDisposable(ANTI_POCKET_ALARM, true));
+        disposable.add(getBooleanDisposable(UNPLUGGED_ALARM, false));
+        disposable.add(getBooleanDisposable(TOUCH_ALARM, false));
+        disposable.add(getBooleanDisposable(ANTI_POCKET_ALARM, false));
         disposable.add(getBooleanDisposable(ANTI_THEFT_PROTECTION, false));
         disposable.add(getBooleanDisposable(SOUND_WITH_ANIMATION, false));
         disposable.add(getBooleanDisposable(SHOW_BATTERY_PERCENTAGE, true));
-        disposable.add(getBooleanDisposable(SHOW_ON_LOCK_SCREEN, true));
+        disposable.add(getBooleanDisposable(SHOW_ON_LOCK_SCREEN, false));
         disposable.add(getStringDisposable(ALARM_CLOSING_PIN));
         disposable.add(getStringDisposable(SELECTED_ANIMATION_NAME));
-        disposable.add(getIntegerDisposable(PLAY_DURATION));
-        disposable.add(getIntegerDisposable(CLOSE_METHOD));
+        disposable.add(getIntegerDisposable(PLAY_DURATION, 0));
+        disposable.add(getIntegerDisposable(CLOSE_METHOD, 1));
 
         Flowable<Pair<PreferenceModel, PreferenceModel>> observable = Flowable.zip(onConnectFileObservable,
                 onDisconnectFileObservable,
@@ -170,23 +170,27 @@ public class MyService extends Service implements SensorEventListener {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         gravity = new float[3];
-        g = new float[3];
         linearAcceleration = new float[3];
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getAction() != null) {
+        if (intent != null && intent.getAction() != null) {
             resetMediaPlayer();
-            if (intent.getAction().equals("alarm_removed")) {
-                dataStore.saveBooleanValue(ANTI_THEFT_PROTECTION, false);
+            if (intent.getAction().equals(String.valueOf(Sensor.TYPE_ACCELEROMETER))) {
+                dataStore.saveBooleanValue(TOUCH_ALARM, false);
+            } else if (intent.getAction().equals(String.valueOf(Sensor.TYPE_PROXIMITY))) {
+                dataStore.saveBooleanValue(ANTI_POCKET_ALARM, false);
+            }
+            synchronized (lock) {
+                isAlarmShowing = false;
             }
         }
         Notification notification = createNotification();
 
-        startForeground(1, notification);
+        startForeground(NOTIFICATION_ID, notification);
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
 
@@ -197,14 +201,28 @@ public class MyService extends Service implements SensorEventListener {
         resetMediaPlayer();
         unregisterPowerConnectedReceiver();
         unregisterPowerDisconnectedReceiver();
+        unregisterLockScreenReceiver();
         sensorManager.unregisterListener(this);
+        releaseVibrator();
+    }
+
+    private void releaseVibrator() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (vibratorManager != null) {
+                vibratorManager.cancel();
+            }
+        } else {
+            if (vibrator != null) {
+                vibrator.cancel();
+            }
+        }
     }
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
-                    "channel_id",
-                    "My Channel",
+                    Constants.CHANNEL_ID,
+                    Constants.CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT
             );
             NotificationManager manager = getSystemService(NotificationManager.class);
@@ -213,9 +231,9 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     private Notification createNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "channel_id")
-                .setContentTitle("Charging Status Monitor")
-                .setContentText("Service is running for anti-theft abd charging animations")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_content_text))
                 .setSmallIcon(R.drawable.ic_baseline_notifications_24)
                 .setContentIntent(createPendingIntent());
         return builder.build();
@@ -226,28 +244,23 @@ public class MyService extends Service implements SensorEventListener {
         return PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
     }
 
-
-    private boolean isAlarmShowing = false;
-
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+        /*if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             float acceleration = (float) Math.sqrt(event.values[0] * event.values[0] + event.values[1] * event.values[1] + event.values[2] * event.values[2]);
-
+            Log.d("MainActivity", "Device moved!" + event.values[0]+","+event.values[1]+","+event.values[2]);
             if (acceleration > THRESHOLD) {
+                Log.d("MainActivity", "Device moved!" + acceleration);
                 // Do something here when movement or displacement is detected
-                if (!isAlarmShowing) {
-                    showAlarmScreen();
-                    isAlarmShowing = true;
+                if (!isAlarmShowing && !isPocket) {
+                    showAlarmScreen(Sensor.TYPE_LINEAR_ACCELERATION);
                 }
-                Log.d("MainActivity", "Device moved!");
-            } else {
-                isAlarmShowing = false;
+
             }
-        }
+        }*/
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
 
-            final float alpha = 0.8f;
+           /* final float alpha = 0.8f;
 
             gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
             gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
@@ -257,32 +270,49 @@ public class MyService extends Service implements SensorEventListener {
             linearAcceleration[1] = event.values[1] - gravity[1];
             linearAcceleration[2] = event.values[2] - gravity[2];
 
-            float acceleration = (float) Math.sqrt(linearAcceleration[0] * linearAcceleration[0] + linearAcceleration[1] * linearAcceleration[1] + linearAcceleration[2] * linearAcceleration[2]);
+            float acceleration = (float) Math.sqrt(linearAcceleration[0] * linearAcceleration[0] + linearAcceleration[1] * linearAcceleration[1] + linearAcceleration[2] * linearAcceleration[2]);*/
+            mGravity = event.values.clone();
+            // Shake detection
+            float x = mGravity[0];
+            float y = mGravity[1];
+            float z = mGravity[2];
+            mAccelLast = mAccelCurrent;
+            mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
+            float delta = mAccelCurrent - mAccelLast;
+            mAccel = mAccel * 0.9f + delta;
+            // Make this higher or lower according to how much
+            // motion you want to detect
 
-            if (acceleration > THRESHOLD) {
-                // Do something here when movement or displacement is detected
-                Log.d("MainActivity", "Device moved!");
+            //Log.d("MainActivity", "Device moved!" + mAccel);
+            //Log.d("MainActivity", "Device moved!" + linearAcceleration[0]+","+linearAcceleration[1]+","+linearAcceleration[2]);
+            if (mAccel > MOVEMENT_THRESHOLD) {
+                synchronized (lock) {
+                    if (!isAlarmShowing && !isPocket) {
+                        Log.d("MainActivity", "Device moved!" + mAccel);
+                        showAlarmScreen(Sensor.TYPE_ACCELEROMETER);
+                        isAlarmShowing = true;
+                    }
+                }
             }
 
-            g = event.values.clone();
-
-            double norm_Of_g = Math.sqrt(g[0] * g[0] + g[1] * g[1] + g[2] * g[2]);
-
-            g[0] = (float) (g[0] / norm_Of_g);
-            g[1] = (float) (g[1] / norm_Of_g);
-            g[2] = (float) (g[2] / norm_Of_g);
-
-            inclination = (int) Math.round(Math.toDegrees(Math.acos(g[2])));
-            Log.d("TAG", "onSensorChanged: XYZ " + round(g[0]) + ",  " + round(g[1]) + ",  " + round(g[2]) + "  inc: " + inclination);
         }
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-            //Log.d("TAG", "onSensorChanged: " +event.values[0] + shouldPlayAlarm + isPocket);
-            if (isPocket) {
-                resetMediaPlayer();
-                showAlarmScreen();
+            //Log.d("TAG", "onSensorChanged: " + event.values[0] + proximity.getMaximumRange());
+            synchronized (lock) {
+                if (!isAlarmShowing && isPocket) {
+                    showAlarmScreen(Sensor.TYPE_PROXIMITY);
+                    isAlarmShowing = true;
+                }
             }
-            isPocket = event.values[0] <= 1;
+            isPocket = event.values[0] < (proximity != null ? proximity.getMaximumRange() : 1);
+            if (!isAlarmShowing && isPocket) {
+                if (Build.VERSION.SDK_INT >= 26) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    vibrator.vibrate(300);
+                }
+            }
         }
 
         /*if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
@@ -293,12 +323,6 @@ public class MyService extends Service implements SensorEventListener {
 
             }
         }*/
-    }
-
-    public BigDecimal round(float d) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(3, RoundingMode.HALF_UP);
-        return bd;
     }
 
 
@@ -336,19 +360,29 @@ public class MyService extends Service implements SensorEventListener {
         }
     }
 
+    private void unregisterLockScreenReceiver() {
+        if (lockScreenReceiver != null) {
+            try {
+                unregisterReceiver(lockScreenReceiver);
+            } catch (Exception ignored) {
+            }
+        }
+    }
+
     public void showAnimationScreen() {
         Intent animationIntent = new Intent(this, AnimationActivity.class);
-        animationIntent.putExtra("isBatteryPercentageEnabled", isShowBatteryPercentageEnabled);
-        animationIntent.putExtra("close_method", closeMethod);
-        animationIntent.putExtra("play_duration", playDuration);
-        animationIntent.putExtra("selected_animation", selectedAnimation);
+        animationIntent.putExtra(Constants.KEY_IS_BATTERY_PERCENTAGE_ENABLED, isShowBatteryPercentageEnabled);
+        animationIntent.putExtra(Constants.KEY_CLOSE_METHOD, closeMethod);
+        animationIntent.putExtra(Constants.KEY_PLAY_DURATION, playDuration);
+        animationIntent.putExtra(Constants.KEY_SELECTED_ANIMATION, selectedAnimation);
         animationIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(animationIntent);
     }
 
-    public void showAlarmScreen() {
+    public void showAlarmScreen(int sensorType) {
         Intent alarmIntent = new Intent(this, AlarmActivity.class);
-        alarmIntent.putExtra("alarm_closing_pin", alarmClosingPing);
+        alarmIntent.putExtra(Constants.KEY_ALARM_CLOSING_PIN, alarmClosingPing);
+        alarmIntent.putExtra(Constants.KEY_TYPE, sensorType);
         alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(alarmIntent);
 
@@ -372,42 +406,8 @@ public class MyService extends Service implements SensorEventListener {
         }
     }
 
-    public void makeFullScreenWindow(View overlayView) {
-        int overlayType;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            overlayType = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
-        } else {
-            overlayType = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-        }
-        // Set any necessary attributes to your view
-        int windowFlags = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
-
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, overlayType, windowFlags, PixelFormat.TRANSLUCENT);
-        overlayView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                    WindowInsetsController insetsController = overlayView.getWindowInsetsController();
-                    if (insetsController != null) {
-                        insetsController.hide(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
-                    }
-                } else {
-                    // Add the deprecated FLAG_FULLSCREEN flag for versions below API level 30
-                    layoutParams.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
-                }
-
-                // Remove the OnGlobalLayoutListener to prevent multiple calls
-                overlayView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-        });
-    }
-
-
-    public Disposable getBooleanDisposable(Preferences.Key<Boolean> key, Boolean defaultValue) {
+    public Disposable getBooleanDisposable(Preferences.Key<Boolean> key, Boolean
+            defaultValue) {
         return dataStore.getBoolean(key, defaultValue).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(value -> {
             if (CHARGING_ANIMATION.equals(key)) {
                 isChargingAnimationEnabled = value;
@@ -422,12 +422,18 @@ public class MyService extends Service implements SensorEventListener {
                 } else {
                     if (!isChargingAnimationEnabled) unregisterPowerConnectedReceiver();
                 }
-            } else if (DISCHARGING_ALARM.equals(key)) {
+            } else if (UNPLUGGED_ALARM.equals(key)) {
                 isUnpluggedAlarmEnabled = value;
                 if (value) {
                     if (isAntiTheftAlarmEnabled) registerPowerDisconnectedReceiver();
                 } else unregisterPowerDisconnectedReceiver();
             } else if (TOUCH_ALARM.equals(key)) {
+                /*if(value) {
+                    new Handler().postDelayed(() -> {
+                        isTouchAlarmEnabled = true;
+                        handleOnTouchAlarm();
+                    }, 10000);
+                }else {*/
                 isTouchAlarmEnabled = value;
                 handleOnTouchAlarm();
             } else if (ANTI_POCKET_ALARM.equals(key)) {
@@ -447,7 +453,6 @@ public class MyService extends Service implements SensorEventListener {
             } else if (SHOW_BATTERY_PERCENTAGE.equals(key)) {
                 isShowBatteryPercentageEnabled = value;
             } else if (SHOW_ON_LOCK_SCREEN.equals(key)) {
-                isShowOnLockScreenEnabled = value;
                 showAnimationOnLockScreen(value);
             }
         });
@@ -459,13 +464,13 @@ public class MyService extends Service implements SensorEventListener {
             if (ALARM_CLOSING_PIN.equals(key)) {
                 alarmClosingPing = value;
             } else if (SELECTED_ANIMATION_NAME.equals(key)) {
-                selectedAnimation = value.isEmpty() ? "default.gif" : value;
+                selectedAnimation = value.isEmpty() ? Constants.DEFAULT_ANIMATION : value;
             }
         });
     }
 
-    public Disposable getIntegerDisposable(Preferences.Key<Integer> key) {
-        return dataStore.getIntegerValue(key).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(value -> {
+    public Disposable getIntegerDisposable(Preferences.Key<Integer> key, int defaultValue) {
+        return dataStore.getIntegerValue(key, defaultValue).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(value -> {
             if (PLAY_DURATION.equals(key)) {
                 switch (value) {
                     case 0:
@@ -499,25 +504,19 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     private void handleOnTouchAlarm() {
-        Sensor linearAccelerationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         Sensor accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (isAntiTheftAlarmEnabled && isTouchAlarmEnabled) {
-            if (linearAccelerationSensor == null) {
-                sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
-                return;
-            }
-            sensorManager.registerListener(this, linearAccelerationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, accelerometerSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            mAccel = 0.00f;
+            mAccelCurrent = SensorManager.GRAVITY_EARTH;
+            mAccelLast = SensorManager.GRAVITY_EARTH;
         } else {
-            if (linearAccelerationSensor == null) {
-                sensorManager.unregisterListener(this, accelerometerSensor);
-                return;
-            }
-            sensorManager.unregisterListener(this, linearAccelerationSensor);
+            sensorManager.unregisterListener(this, accelerometerSensor);
         }
     }
 
     private void handleAntiPocketAlarm() {
-        Sensor proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        proximity = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         if (isAntiTheftAlarmEnabled && isAntiPocketAlarmEnabled) {
             sensorManager.registerListener(this, proximity, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
@@ -526,55 +525,62 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     public void onChargerDisconnected() {
-        resetMediaPlayer();
-        if (disconnectPreference == null) return;
-        showAlarmScreen();
+        synchronized (lock) {
+            if (!isAlarmShowing) {
+                showAlarmScreen(Constants.ALARM_TYPE_UNPLUGGED);
+                isAlarmShowing = true;
+            }
+        }
     }
 
     public void onChargerConnected() {
-        resetMediaPlayer();
         if (connectPreference == null) return;
         if (isChargingAnimationEnabled) {
-            showAnimationScreen();
-            if (isSoundWithAnimationEnabled) {
-                try {
-                    mediaPlayer = new MediaPlayer();
-                    if (Objects.equals(connectPreference.getType(), FileType.ASSET)) {
-                        String fileName = getString(R.string.asset_folder_name) + "/" + connectPreference.getName();
-                        Log.d("TAG", "onReceive: " + fileName);
-                        AssetFileDescriptor descriptor = getAssets().openFd(fileName);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            mediaPlayer.setDataSource(descriptor);
+            if (!isAlarmShowing) {
+                showAnimationScreen();
+                resetMediaPlayer();
+                if (isSoundWithAnimationEnabled) {
+                    try {
+                        mediaPlayer = new MediaPlayer();
+                        if (Objects.equals(connectPreference.getType(), FileType.ASSET)) {
+                            String fileName = getString(R.string.asset_folder_name) + "/" + connectPreference.getName();
+                            Log.d("TAG", "onReceive: " + fileName);
+                            AssetFileDescriptor descriptor = getAssets().openFd(fileName);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                mediaPlayer.setDataSource(descriptor);
+                            } else {
+                                mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+                            }
+                            descriptor.close();
                         } else {
-                            mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+                            Log.d("TAG", "onChargerConnected: " + connectPreference.getPath());
+                            mediaPlayer.setDataSource(this, Uri.parse(connectPreference.getPath()));
                         }
-                        descriptor.close();
-                    } else {
-                        Log.d("TAG", "onChargerConnected: " + connectPreference.getPath());
-                        mediaPlayer.setDataSource(this, Uri.parse(connectPreference.getPath()));
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                    } catch (IOException e) {
+                        Log.d("TAG", "onReceive: " + e.getMessage());
                     }
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException e) {
-                    Log.d("TAG", "onReceive: " + e.getMessage());
                 }
             }
         } else if (isPluggedAlarmEnabled) {
-            showAlarmScreen();
+            synchronized (lock) {
+                if (!isAlarmShowing) {
+                    showAlarmScreen(Constants.ALARM_TYPE_PLUGGED);
+                    isAlarmShowing = true;
+                }
+            }
         }
     }
 
     public void showAnimationOnLockScreen(boolean value) {
-        lockScreenReceiver = new LockScreenReceiver();
         if (value) {
+            lockScreenReceiver = new LockScreenReceiver();
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_SCREEN_ON);
             registerReceiver(lockScreenReceiver, intentFilter);
         } else {
-            try {
-                unregisterReceiver(lockScreenReceiver);
-            } catch (Exception ignored) {
-            }
+            unregisterLockScreenReceiver();
         }
     }
 

@@ -8,17 +8,18 @@
 
     <TextView
         android:id="@+id/soundWithAnimation"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Sound with animation"
+        android:text="@string/sound_with_animation"
+        app:layout_constraintEnd_toStartOf="@id/soundWithAnimationSwitch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <com.chargingstatusmonitor.SwitchCompatEx
+    <com.chargingstatusmonitor.souhadev.ui.customview.SwitchCompatEx
         android:id="@+id/soundWithAnimationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
         android:padding="10dp"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Play duration"
+        android:text="@string/play_duration"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/soundWithAnimation" />
 
@@ -57,7 +58,7 @@
         android:padding="10dp"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Close method"
+        android:text="@string/close_method"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/playDuration" />
 
@@ -72,16 +73,17 @@
 
     <TextView
         android:id="@+id/showBatterPercentage"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Show battery percentage"
+        android:text="@string/show_battery_percentage"
+        app:layout_constraintEnd_toStartOf="@id/batteryPercentageSwitch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/closeMethod" />
 
-    <com.chargingstatusmonitor.SwitchCompatEx
+    <com.chargingstatusmonitor.souhadev.ui.customview.SwitchCompatEx
         android:id="@+id/batteryPercentageSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,16 +98,17 @@
 
     <TextView
         android:id="@+id/showOnLockScreen"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Show on lock screen"
+        android:text="@string/show_on_lock_screen"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/showOnLockScreenSwitch"
         app:layout_constraintTop_toBottomOf="@id/showBatterPercentage" />
 
-    <com.chargingstatusmonitor.SwitchCompatEx
+    <com.chargingstatusmonitor.souhadev.ui.customview.SwitchCompatEx
         android:id="@+id/showOnLockScreenSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -116,5 +119,18 @@
         app:layout_constraintBottom_toBottomOf="@id/showOnLockScreen"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/showOnLockScreen"/>
+
+    <TextView
+        android:id="@+id/warningText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="12sp"
+        android:textColor="@color/black"
+        android:layout_marginTop="-10dp"
+        android:text="Careful! It will show animation every time you open the lock sceen."
+        app:layout_constraintStart_toStartOf="@id/showOnLockScreen"
+        app:layout_constraintEnd_toStartOf="@id/showOnLockScreenSwitch"
+        app:layout_constraintTop_toBottomOf="@id/showOnLockScreen" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

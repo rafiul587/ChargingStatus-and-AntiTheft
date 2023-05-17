@@ -6,8 +6,8 @@
     <dimen name="labeled_default_height">32dp</dimen>
     <dimen name="day_night_default_width">84dp</dimen>
     <dimen name="day_night_default_height">48dp</dimen>
-    <dimen name="key_text_size">24.0sp</dimen>
-    <dimen name="drawableDimen">25dp</dimen>
+    <dimen name="key_text_size">22.0sp</dimen>
+    <dimen name="drawableDimen">30dp</dimen>
     <dimen name="digit_vertical_padding">40.0dp</dimen>
     <dimen name="digit_horizontal_padding">15.0dp</dimen>
     <dimen name="key_pad_min_height">300.0dp</dimen>

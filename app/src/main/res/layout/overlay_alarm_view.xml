@@ -12,9 +12,9 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:textSize="35sp"
-        android:text="Enter Pin"/>
+        android:text="@string/enter_pin"/>
 
-<com.chargingstatusmonitor.souhadev.PassCodeView
+<com.chargingstatusmonitor.souhadev.ui.customview.PassCodeView
     android:id="@+id/pass_code_view"
     android:layout_width="300dp"
     android:layout_height="450dp"
@@ -23,8 +23,8 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
     app:digits="4"
-    app:digit_size="25dp"
-    app:key_text_size="30sp"
+    app:digit_size="30dp"
+    app:key_text_size="24sp"
     app:digit_vertical_padding="90dp"
     android:padding="30dp"
     app:empty_drawable="@drawable/empty_dot"

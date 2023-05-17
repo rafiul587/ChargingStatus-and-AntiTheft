@@ -1,12 +1,13 @@
 package com.chargingstatusmonitor.souhadev.model;
 
-import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 public class GuideLine {
     private int imageResId;
-    private String title, description;
+    @StringRes
+    int description, title;
 
-    public GuideLine(int imageResId, String title, String description) {
+    public GuideLine(int imageResId, int title, int description) {
         this.imageResId = imageResId;
         this.title = title;
         this.description = description;
@@ -16,11 +17,11 @@ public class GuideLine {
         return imageResId;
     }
 
-    public String getTitle() {
+    public int getTitle() {
         return title;
     }
 
-    public String getDescription() {
+    public int getDescription() {
         return description;
     }
 }

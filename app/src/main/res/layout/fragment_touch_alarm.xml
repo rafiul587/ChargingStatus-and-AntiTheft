@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -17,21 +18,58 @@
         app:layout_constraintBottom_toTopOf="@id/info"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center"
-        android:text="Detects when someone touches your phone"
+        android:text="@string/touch_alarm_desc"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/green_500"
-        app:layout_constraintBottom_toTopOf="@id/activationSwitch"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/activationText"
         app:layout_constraintTop_toBottomOf="@id/image" />
 
-    <com.chargingstatusmonitor.SwitchCompatEx
+    <TextView
+        android:id="@+id/activationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/counterView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:textColor="@color/green_500"
+        android:visibility="gone"
+        android:text="@string/service_activate_timer_desc"/>
+
+    <FrameLayout
+        android:id="@+id/counterView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@id/activationSwitch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/green_500"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone"
+        android:background="@drawable/bg_voice_recorder">
+        <TextView
+            android:id="@+id/counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="35sp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            tools:text="20"/>
+    </FrameLayout>
+
+    <com.chargingstatusmonitor.souhadev.ui.customview.SwitchCompatEx
         android:id="@+id/activationSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +81,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:switchMinWidth="@dimen/_100sdp"
-        android:layout_marginBottom="40dp"
-        app:track="@drawable/track_selector" />
+        android:layout_marginBottom="40dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

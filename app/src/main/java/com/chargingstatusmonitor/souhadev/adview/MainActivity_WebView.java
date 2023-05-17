@@ -10,7 +10,6 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.DownloadListener;
@@ -23,18 +22,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chargingstatusmonitor.souhadev.AdsManagerTradePlus;
-import com.chargingstatusmonitor.souhadev.Continue;
+import com.chargingstatusmonitor.souhadev.ui.activities.Continue;
 import com.chargingstatusmonitor.souhadev.MyApplication;
 import com.chargingstatusmonitor.souhadev.R;
-import com.chargingstatusmonitor.souhadev.snake.MainActivity_Snake;
-import com.onesignal.OSNotificationOpenedResult;
-import com.onesignal.OneSignal;
-
-import org.json.JSONObject;
 
 
 public class MainActivity_WebView extends Activity {

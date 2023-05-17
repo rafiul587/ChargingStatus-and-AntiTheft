@@ -11,7 +11,7 @@
         android:id="@+id/setPinText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set your pin"
+        android:text="@string/set_pin_title"
         android:textColor="@color/green_700"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,7 +37,7 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/green_200"
         app:layout_constraintTop_toBottomOf="@id/setPinText"
-        android:text="This pin will be used to stop alarms. Don't forget the pin!"/>
+        android:text="@string/why_pin_desc"/>
 
     <TextView
         android:id="@+id/textEnterCode"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="20dp"
-        android:text="Enter your code"
+        android:text="@string/enter_code_text"
         android:textColor="@color/green_700"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +59,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/border_gradient_greenish"
         android:gravity="center"
-        android:hint="****"
+        android:hint="@string/pin_hint"
         android:inputType="numberPassword"
         android:paddingHorizontal="15dp"
         android:paddingVertical="15dp"
@@ -76,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="10dp"
-        android:text="Confirm code"
+        android:text="@string/confirm_code_text"
         android:textColor="@color/green_700"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,7 +90,7 @@
         android:layout_marginTop="5dp"
         android:background="@drawable/border_gradient_greenish"
         android:gravity="center"
-        android:hint="****"
+        android:hint="@string/pin_hint"
         android:maxLength="4"
         android:inputType="numberPassword"
         android:paddingHorizontal="15dp"
@@ -123,7 +123,7 @@
         android:background="@drawable/bg_button_gradient_greenish"
         android:minHeight="0dp"
         android:paddingVertical="15dp"
-        android:text="Confirm"
+        android:text="@string/confirm"
         android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/error" />
 

@@ -20,12 +20,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/settings_screen_title"
         app:titleTextAppearance="@style/ToolbarStyle"
+        app:navigationIcon="@drawable/ic_navigation_back"
         app:titleTextColor="@color/brown" />
 
     <ScrollView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="none"
+        android:paddingHorizontal="15dp"
         app:layout_constraintTop_toBottomOf="@id/topWave"
         app:layout_constraintBottom_toTopOf="@id/bottomWave">
 
@@ -82,7 +84,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="8dp"
                     android:alpha=".7"
-                    android:text="Ad"
+                    android:text="@string/ad"
                     android:textColor="@color/brown" />
             </LinearLayout>
 
@@ -127,7 +129,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="8dp"
                     android:alpha=".7"
-                    android:text="Ad"
+                    android:text="@string/ad"
                     android:textColor="@color/brown" />
             </LinearLayout>
 

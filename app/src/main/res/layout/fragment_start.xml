@@ -7,7 +7,7 @@
         android:id="@+id/chargingIcon"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:contentDescription="Charging Icon"
+        android:contentDescription="@string/charging_icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/startButton"

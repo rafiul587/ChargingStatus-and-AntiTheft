@@ -52,7 +52,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20.0dip"
                     android:gravity="center"
-                    android:text="Exit"
+                    android:text="@string/exit_app"
                     android:textAppearance="?android:textAppearanceLarge"
                     android:textColor="@android:color/black" />
 
@@ -64,7 +64,7 @@
                     android:layout_marginTop="10.0dip"
                     android:layout_marginRight="20.0dip"
                     android:gravity="center"
-                    android:text="Do you want to exit?"
+                    android:text="@string/exit_dialog_msg"
                     android:textColor="@android:color/black" />
 
                 <LinearLayout
@@ -91,7 +91,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:gravity="center"
-                            android:text="Rate US"
+                            android:text="@string/rate_us"
                             android:textColor="@android:color/black"
                             android:textSize="@dimen/_12sdp" />
                     </androidx.cardview.widget.CardView>
@@ -111,7 +111,7 @@
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
                             android:gravity="center"
-                            android:text="EXIT"
+                            android:text="@string/exit_app"
                             android:textAppearance="?android:textAppearanceSmall"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12sdp" />

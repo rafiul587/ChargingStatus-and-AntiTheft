@@ -8,7 +8,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.chargingstatusmonitor.souhadev.AdsManagerTradePlus;
-import com.chargingstatusmonitor.souhadev.Continue;
 import com.chargingstatusmonitor.souhadev.MyApplication;
 import com.chargingstatusmonitor.souhadev.R;
 

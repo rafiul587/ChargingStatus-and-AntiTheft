@@ -28,7 +28,7 @@
                 android:id="@+id/healthTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Battery Health"
+                android:text="@string/battery_health"
                 android:textColor="@color/green_500"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -75,7 +75,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status"
+                android:text="@string/status"
                 android:textColor="@color/green_500"
                 android:textSize="16sp" />
 
@@ -115,7 +115,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Charging Type"
+                android:text="@string/charging_type"
                 android:textColor="@color/green_500"
                 android:textSize="16sp" />
 
@@ -154,7 +154,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Battery Level"
+                android:text="@string/battery_level"
                 android:textColor="@color/green_500"
                 android:textSize="16sp" />
 
@@ -167,19 +167,17 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <com.chargingstatusmonitor.souhadev.WaveLoadingView
+            <com.chargingstatusmonitor.souhadev.ui.customview.WaveLoadingView
                 android:id="@+id/batteryLevelWave"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                app:wlv_borderColor="@color/black"
-                app:wlv_borderWidth="4dp"
                 app:wlv_progressValue="90"
                 app:wlv_round_rectangle="true"
                 app:wlv_shapeType="rectangle"
                 app:wlv_triangle_direction="north"
                 app:wlv_waveAmplitude="20"
                 app:wlv_waveColor="@color/green_200"
-                app:wlv_wave_background_Color="@color/white" />
+                app:wlv_wave_background_Color="@color/grey_200" />
 
         </LinearLayout>
 
@@ -199,7 +197,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Expand Button"
+            android:contentDescription="@string/expand_button_content_desc"
             android:rotation="-90"
             android:src="@drawable/baseline_arrow_back_ios_new_24"
             app:layout_constraintEnd_toEndOf="parent"

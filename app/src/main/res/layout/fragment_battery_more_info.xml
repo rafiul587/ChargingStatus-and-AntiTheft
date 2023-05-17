@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Battery Capacity"
+                android:text="@string/battery_capacity"
                 android:textColor="@color/green_500"
                 android:textSize="16sp" />
 
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="@color/green_500"
-                android:text="Temperature"/>
+                android:text="@string/temperature"/>
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
@@ -103,7 +103,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Battery Type"
+                android:text="@string/battery_type"
                 android:textColor="@color/green_500"
                 android:textSize="16sp" />
             <ImageView
@@ -140,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:textColor="@color/green_500"
-                android:text="Voltage"/>
+                android:text="@string/voltage"/>
             <ImageView
                 android:layout_width="56dp"
                 android:layout_height="56dp"
@@ -157,43 +157,6 @@
                 tools:text="389 mV"/>
 
         </LinearLayout>
-
-<!--
-        <LinearLayout
-            android:layout_width="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/middleGuideline"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintTop_toBottomOf="@id/batteryTypeLayout"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_card_view"
-            android:padding="10dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:textColor="@color/green_500"
-                android:text="Time to fill"/>
-            <ImageView
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:padding="4dp"
-                android:src="@drawable/ic_charging_time"
-                app:tint="@color/green_500" />
-            <TextView
-                android:id="@+id/timeRemaining"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:textColor="@color/green_200"
-                tools:text="10 min"/>
-
-        </LinearLayout>-->
 
 
     <androidx.constraintlayout.widget.Guideline

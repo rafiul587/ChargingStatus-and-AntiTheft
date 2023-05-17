@@ -15,7 +15,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/ic_screen_top_wave"/>
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         app:layout_constraintTop_toTopOf="parent"

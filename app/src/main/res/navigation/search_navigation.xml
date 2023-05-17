@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.SearchFragment"
+        android:name="com.chargingstatusmonitor.souhadev.ui.sounds.SearchFragment"
         android:label="@string/search_screen_title"
         tools:layout="@layout/fragment_search" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/navigation_unlock"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.UnlockFragment"
+        android:name="com.chargingstatusmonitor.souhadev.ui.sounds.UnlockFragment"
         android:label="@string/unlock_screen_title"
         tools:layout="@layout/fragment_unlock" />
 

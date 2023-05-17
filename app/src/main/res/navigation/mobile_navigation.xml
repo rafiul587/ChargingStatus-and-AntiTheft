@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_battery_info"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.batteryinfo.BatteryInfoFragment"
+        android:name="com.chargingstatusmonitor.souhadev.ui.batteryinfo.BatteryInfoFragment"
         android:label="@string/battery_info_screen_title"
         tools:layout="@layout/fragment_battery_more_info" />
 
     <fragment
         android:id="@+id/navigation_unlock"
-        android:name="com.chargingstatusmonitor.souhadev.ui.fragments.UnlockFragment"
+        android:name="com.chargingstatusmonitor.souhadev.ui.sounds.UnlockFragment"
         android:label="@string/unlock_screen_title"
         tools:layout="@layout/fragment_unlock" />
 
@@ -31,7 +31,7 @@
         app:startDestination="@id/navigation_ringtone">
         <fragment
             android:id="@+id/navigation_ringtone"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.RingtoneFragment"
+            android:name="com.chargingstatusmonitor.souhadev.ui.sounds.RingtoneFragment"
             android:label="@string/ringtone_screen_title"
             tools:layout="@layout/fragment_ringtone">
             <action
@@ -46,17 +46,17 @@
         </fragment>
         <fragment
             android:id="@+id/navigation_phone"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.PhoneFragment"
+            android:name="com.chargingstatusmonitor.souhadev.ui.sounds.PhoneFragment"
             android:label="@string/phone_screen_title"
             tools:layout="@layout/fragment_phone"/>
         <fragment
             android:id="@+id/navigation_download"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.DownloadFragment"
+            android:name="com.chargingstatusmonitor.souhadev.ui.sounds.DownloadFragment"
             android:label="@string/download_screen_title"
             tools:layout="@layout/fragment_download"/>
         <fragment
             android:id="@+id/navigation_record"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.RecordFragment"
+            android:name="com.chargingstatusmonitor.souhadev.ui.sounds.RecordFragment"
             android:label="@string/record_screen_title"
             tools:layout="@layout/fragment_record" />
     </navigation>
@@ -64,7 +64,7 @@
         app:startDestination="@id/navigation_animation_list">
         <fragment
             android:id="@+id/navigation_animation_list"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.charginganimation.AnimationListFragment"
+            android:name="com.chargingstatusmonitor.souhadev.ui.charginganimation.AnimationListFragment"
             android:label="@string/charging_animation_screen_title"
             tools:layout="@layout/fragment_charging_animation" >
             <action
@@ -73,8 +73,8 @@
         </fragment>
         <fragment
             android:id="@+id/navigation_apply_animation"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.charginganimation.ApplyAnimationFragment"
-            android:label="@string/charging_animation_screen_title"
+            android:name="com.chargingstatusmonitor.souhadev.ui.charginganimation.ApplyAnimationFragment"
+            android:label="@string/apply_animation"
             tools:layout="@layout/fragment_apply_animation" >
             <action
                 android:id="@+id/action_navigation_apply_animation_to_navigation_animation_settings"
@@ -82,26 +82,26 @@
         </fragment>
         <fragment
             android:id="@+id/navigation_animation_settings"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.charginganimation.AnimationSettingsFragment"
-            android:label="@string/charging_animation_screen_title"
+            android:name="com.chargingstatusmonitor.souhadev.ui.charginganimation.AnimationSettingsFragment"
+            android:label="@string/animation_settings"
             tools:layout="@layout/fragment_animation_settings" />
     </navigation>
     <navigation android:id="@+id/navigation_anti_theft_graph"
         app:startDestination="@id/navigation_anti_theft">
         <fragment
             android:id="@+id/navigation_set_pin"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.SetPinFragment"
-            android:label="@string/charging_animation_screen_title"
+            android:name="com.chargingstatusmonitor.souhadev.ui.antitheft.SetPinFragment"
+            android:label="@string/set_alarm_pin"
             tools:layout="@layout/fragment_set_pin" >
         </fragment>
         <fragment
             android:id="@+id/navigation_anti_theft"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.AntiTheftFragment"
+            android:name="com.chargingstatusmonitor.souhadev.ui.antitheft.AntiTheftFragment"
             android:label="@string/anti_theft_screen_title"
             tools:layout="@layout/fragment_anti_theft" >
             <action
                 android:id="@+id/action_navigation_anti_theft_to_navigation_charging_alarm"
-                app:destination="@id/navigation_charging_alarm" />
+                app:destination="@id/navigation_discharging_alarm" />
             <action
                 android:id="@+id/action_navigation_anti_theft_to_navigation_touch_alarm"
                 app:destination="@id/navigation_touch_alarm" />
@@ -113,19 +113,19 @@
                 app:destination="@id/navigation_set_pin" />
         </fragment>
         <fragment
-            android:id="@+id/navigation_charging_alarm"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.ChargingAlarmFragment"
-            android:label="@string/charging_animation_screen_title"
-            tools:layout="@layout/fragment_charging_alarm" />
+            android:id="@+id/navigation_discharging_alarm"
+            android:name="com.chargingstatusmonitor.souhadev.ui.antitheft.UnpluggedAlarmFragment"
+            android:label="@string/unplugged_alarm"
+            tools:layout="@layout/fragment_unplugged_alarm" />
         <fragment
             android:id="@+id/navigation_touch_alarm"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.TouchAlarmFragment"
-            android:label="@string/charging_animation_screen_title"
+            android:name="com.chargingstatusmonitor.souhadev.ui.antitheft.TouchAlarmFragment"
+            android:label="@string/touch_alarm"
             tools:layout="@layout/fragment_touch_alarm" />
         <fragment
             android:id="@+id/navigation_anti_pocket_alarm"
-            android:name="com.chargingstatusmonitor.souhadev.ui.fragments.antitheft.AntiPocketAlarmFragment"
-            android:label="@string/charging_animation_screen_title"
+            android:name="com.chargingstatusmonitor.souhadev.ui.antitheft.AntiPocketAlarmFragment"
+            android:label="@string/anti_pocket_alarm"
             tools:layout="@layout/fragment_anti_pocket_alarm" />
     </navigation>
 

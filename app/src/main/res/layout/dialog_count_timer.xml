@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="30dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+        <TextView
+            android:id="@+id/activationText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:textSize="18sp"
+            android:textColor="@color/green_500"
+            android:text="@string/service_activate_timer_desc"/>
+
+        <FrameLayout
+            android:id="@+id/counterView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:backgroundTint="@color/green_500"
+            android:background="@drawable/bg_voice_recorder">
+                <TextView
+                    android:id="@+id/counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="35sp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    tools:text="20"/>
+        </FrameLayout>
+
+</LinearLayout>
