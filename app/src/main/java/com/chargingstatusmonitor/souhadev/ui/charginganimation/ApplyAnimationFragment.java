@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,6 +65,7 @@ public class ApplyAnimationFragment extends Fragment {
 
         binding.apply.setOnClickListener(v -> {
             dataStore.saveStringValue(AppDataStore.SELECTED_ANIMATION_NAME, animationName);
+            Toast.makeText(requireContext(), "The animation has been added successfully!", Toast.LENGTH_SHORT).show();
         });
         binding.settings.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).navigate(R.id.action_navigation_apply_animation_to_navigation_animation_settings);

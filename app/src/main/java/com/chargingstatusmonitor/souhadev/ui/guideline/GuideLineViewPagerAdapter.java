@@ -24,7 +24,7 @@ public class GuideLineViewPagerAdapter extends FragmentStateAdapter {
     private List<GuideLine> initGuideLineModels() {
 
         GuideLine guideLine1 = new GuideLine(R.drawable.ic_starting_guide_battery_info, R.string.battery_info, R.string.guide_batter_info_desc);
-        GuideLine guideLine2 = new GuideLine(R.drawable.ic_starting_guide_charging_sound,R.string.charging_sounds, R.string.guide_charging_sounds_desc);
+        GuideLine guideLine2 = new GuideLine(R.drawable.ic_starting_guide_charging_sound,R.string.charging_sound, R.string.guide_charging_sounds_desc);
         GuideLine guideLine3 = new GuideLine(R.drawable.ic_starting_guide_anti_theft,R.string.anti_theft_protection, R.string.guide_anti_theft_protection_desc);
         GuideLine guideLine4 = new GuideLine(R.drawable.ic_starting_guide_charging_animation,  R.string.charging_animation, R.string.guide_charging_animation_desc);
         GuideLine guideLine5 = new GuideLine(R.drawable.ic_starting_guide_complete, R.string.all_set, R.string.guide_all_set_desc);

@@ -22,6 +22,8 @@ public class AnimationListAdapter extends RecyclerView.Adapter<AnimationListAdap
 
     private List<AnimationModel> animationList;
 
+    private boolean isDefaultSelected = false;
+
     interface OnAnimationClickListener {
         void onItemClick(int position);
     }
@@ -69,27 +71,34 @@ public class AnimationListAdapter extends RecyclerView.Adapter<AnimationListAdap
         if (position == 0) {
             Glide.with(viewHolder.itemView.getContext())
                     .asGif()
-                    .load("file:///android_asset/animations/" +Constants.DEFAULT_ANIMATION)
+                    .load("file:///android_asset/animations/" + Constants.DEFAULT_ANIMATION)
                     .into(viewHolder.animationImageView);
-            viewHolder.download.setVisibility(View.GONE);
+            if (isDefaultSelected) {
+                viewHolder.download.setVisibility(View.VISIBLE);
+                viewHolder.download.setImageResource(R.drawable.ic_selected);
+            } else viewHolder.download.setVisibility(View.GONE);
             return;
         }
         AnimationModel animation = animationList.get(position - 1);
-        if(animation.getProgress() == -1 || animation.getProgress() == 100){
+        if (animation.getProgress() == -1 || animation.getProgress() == 100) {
             viewHolder.downloadProgress.hide();
-        }else if(animation.getProgress()>=0){
+        } else if (animation.getProgress() >= 0) {
             viewHolder.downloadProgress.show();
             viewHolder.downloadProgress.setProgress(animation.getProgress());
         }
         viewHolder.downloadProgress.setProgress(animation.getProgress());
         if (animation.getProgress() == 100f) {
-            viewHolder.download.setVisibility(View.GONE);
+            if (animation.isSelected()) {
+                viewHolder.download.setVisibility(View.VISIBLE);
+                viewHolder.download.setImageResource(R.drawable.ic_selected);
+            } else viewHolder.download.setVisibility(View.GONE);
         } else {
             viewHolder.download.setVisibility(View.VISIBLE);
+            viewHolder.download.setImageResource(R.drawable.baseline_cloud_download_24);
         }
 
         Glide.with(viewHolder.itemView.getContext())
-                .load(Constants.BASE_URL+ "download/" + Constants.IDENTIFIER + "/" + animation.getName())
+                .load(Constants.BASE_URL + "download/" + Constants.IDENTIFIER + "/" + animation.getName())
                 .placeholder(R.drawable.ic_loading)
                 .into(viewHolder.animationImageView);
     }
@@ -97,6 +106,14 @@ public class AnimationListAdapter extends RecyclerView.Adapter<AnimationListAdap
     @Override
     public int getItemCount() {
         return animationList.size() + 1;
+    }
+
+    public void setDefaultSelected(boolean defaultSelected) {
+        isDefaultSelected = defaultSelected;
+    }
+
+    public boolean isDefaultSelected() {
+        return isDefaultSelected;
     }
 }
 

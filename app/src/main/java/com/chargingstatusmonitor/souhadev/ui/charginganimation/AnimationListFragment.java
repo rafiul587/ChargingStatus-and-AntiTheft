@@ -21,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.chargingstatusmonitor.souhadev.MyApplication;
+import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.data.remote.ArchiveApi;
 import com.chargingstatusmonitor.souhadev.data.remote.DownloadFileState;
 import com.chargingstatusmonitor.souhadev.data.remote.RetrofitClient;
@@ -63,16 +65,21 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
     List<AnimationModel> animationList;
 
     List<StorageReference> animations;
+    Call<ApiResponse> call;
+    AppDataStore dataStore;
 
     public AnimationListFragment() {
 
     }
+
+    String selectedAnimation = "";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentChargingAnimationBinding.inflate(inflater, container, false);
+        dataStore = ((MyApplication) requireContext().getApplicationContext()).getDataStore();
         disposable = new CompositeDisposable();
         animationList = new ArrayList<>();
         animations = new ArrayList<>();
@@ -86,13 +93,19 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
             getDownloadedAnimation(requireContext(), emitter);
         });
         binding.progressBar.setVisibility(View.VISIBLE);
+        selectedAnimation = dataStore.getStringValue(AppDataStore.SELECTED_ANIMATION_NAME).blockingFirst();
+        if (selectedAnimation.isEmpty() || selectedAnimation.equals(Constants.DEFAULT_ANIMATION)) {
+            adapter.setDefaultSelected(true);
+        }
         disposable.add(Observable.zip(listObservable, listObservable2, (animationList, downloadedAnimationList) -> {
                     // combine the two lists here and return the result
                     List<AnimationModel> result = new ArrayList<>();
                     for (String animation : animationList) {
                         if (downloadedAnimationList.contains(animation)) {
-                            result.add(new AnimationModel(animation, 100));
-                        } else result.add(new AnimationModel(animation, -1));
+                            if (!adapter.isDefaultSelected()) {
+                                result.add(new AnimationModel(animation, selectedAnimation.equals(animation), 100));
+                            } else result.add(new AnimationModel(animation, false, 100));
+                        } else result.add(new AnimationModel(animation, false, -1));
                     }
                     return result;
                 })
@@ -111,7 +124,7 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
     }
 
     public void getAllAnimations(@NonNull ObservableEmitter<List<String>> emitter) {
-        Call<ApiResponse> call = RetrofitClient.getInstance().getArchiveApi().getArchiveDetails(Constants.IDENTIFIER);
+        call = RetrofitClient.getInstance().getArchiveApi().getArchiveDetails(Constants.IDENTIFIER);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(@NonNull Call<ApiResponse> call, @NonNull Response<ApiResponse> response) {
@@ -124,11 +137,13 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
                         // Save the file to your device
                         // ...
                     } catch (Exception e) {
-                        emitter.onError(e);
+                        if (binding != null) binding.progressBar.setVisibility(View.GONE);
+                        //emitter.onError(e);
                         Log.d("TAG", "onResponse: " + e.getLocalizedMessage());
                     }
                 } else {
-                    emitter.onError(new Throwable("Something went wrong!"));
+                    if (binding != null) binding.progressBar.setVisibility(View.GONE);
+                    //emitter.onError(new Throwable("Something went wrong!"));
                     // Handle error
                     // ...
                 }
@@ -136,14 +151,15 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                emitter.onError(t);
                 // Handle error
                 // ...
+                if (binding != null) binding.progressBar.setVisibility(View.GONE);
+                //emitter.onError(t);
             }
         });
     }
 
-/*    public void listAllPaginated(@Nullable String pageToken, @NonNull ObservableEmitter<List<StorageReference>> emitter) {
+    /*    public void listAllPaginated(@Nullable String pageToken, @NonNull ObservableEmitter<List<StorageReference>> emitter) {
 
         Task<ListResult> listPageTask = pageToken != null
                 ? listRef.list(100, pageToken)
@@ -177,13 +193,17 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
         disposable.add(RetrofitClient.getInstance().downloadFile(Constants.IDENTIFIER, destinationDir, animation.getName())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( state -> {
-                    if(state instanceof DownloadFileState.Progress){
-                        notifyItemChange(animation.getName(), position, ((DownloadFileState.Progress) state).getPercent());
-                    }else if(state instanceof  DownloadFileState.Finished){
-                        notifyItemChange(animation.getName(), position, 100);
-                    }
-                }));
+                .subscribe(state -> {
+                            if (state instanceof DownloadFileState.Progress) {
+                                notifyItemChange(animation.getName(), position, ((DownloadFileState.Progress) state).getPercent());
+                            } else if (state instanceof DownloadFileState.Finished) {
+                                notifyItemChange(animation.getName(), position, 100);
+                            }
+
+                        },
+                        throwable -> {
+                            notifyItemChange(animation.getName(), position, -2);
+                        }));
         /*Call<ResponseBody> call = archiveApi.downloadFile(Constants.IDENTIFIER, animation.getName());
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -235,7 +255,7 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
     }
 
     public void notifyItemChange(String name, int position, int progress) {
-        animationList.set(position, new AnimationModel(name, progress));
+        animationList.set(position, new AnimationModel(name, false, progress));
         adapter.notifyItemChanged(position + 1);
     }
 
@@ -243,6 +263,7 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (call != null) call.cancel();
         disposable.clear();
         binding = null;
     }
@@ -263,7 +284,6 @@ public class AnimationListFragment extends Fragment implements AnimationListAdap
                 downloadAnimation(position - 1);
             }
         }
-
     }
 
     public void getDownloadedAnimation(Context context, @NonNull ObservableEmitter<List<String>> emitter) {

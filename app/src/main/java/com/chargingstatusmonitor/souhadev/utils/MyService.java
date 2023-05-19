@@ -11,7 +11,6 @@ import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.PLAY_DU
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SELECTED_ANIMATION_NAME;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SHOW_BATTERY_PERCENTAGE;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SHOW_ON_LOCK_SCREEN;
-import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SOUND_WITH_ANIMATION;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.TOUCH_ALARM;
 import static com.chargingstatusmonitor.souhadev.utils.Constants.CHANNEL_ID;
 import static com.chargingstatusmonitor.souhadev.utils.Constants.MOVEMENT_THRESHOLD;
@@ -80,7 +79,6 @@ public class MyService extends Service implements SensorEventListener {
     private boolean isTouchAlarmEnabled = true;
     private boolean isAntiPocketAlarmEnabled = true;
     private boolean isAntiTheftAlarmEnabled = false;
-    private boolean isSoundWithAnimationEnabled = true;
     private boolean isShowBatteryPercentageEnabled = true;
     Sensor proximity;
     private String alarmClosingPing = "";
@@ -131,7 +129,6 @@ public class MyService extends Service implements SensorEventListener {
         disposable.add(getBooleanDisposable(TOUCH_ALARM, false));
         disposable.add(getBooleanDisposable(ANTI_POCKET_ALARM, false));
         disposable.add(getBooleanDisposable(ANTI_THEFT_PROTECTION, false));
-        disposable.add(getBooleanDisposable(SOUND_WITH_ANIMATION, false));
         disposable.add(getBooleanDisposable(SHOW_BATTERY_PERCENTAGE, true));
         disposable.add(getBooleanDisposable(SHOW_ON_LOCK_SCREEN, false));
         disposable.add(getStringDisposable(ALARM_CLOSING_PIN));
@@ -344,6 +341,7 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     private void registerPowerDisconnectedReceiver() {
+        Log.d("TAG", "registerPowerDisconnectedReceiver: ");
         if (disconnectedReceiver == null) {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
@@ -353,6 +351,7 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     private void unregisterPowerDisconnectedReceiver() {
+        Log.d("TAG", "unregisterPowerDisconnectedReceiver: ");
         try {
             unregisterReceiver(disconnectedReceiver);
             disconnectedReceiver = null;
@@ -370,6 +369,7 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     public void showAnimationScreen() {
+        resetMediaPlayer();
         Intent animationIntent = new Intent(this, AnimationActivity.class);
         animationIntent.putExtra(Constants.KEY_IS_BATTERY_PERCENTAGE_ENABLED, isShowBatteryPercentageEnabled);
         animationIntent.putExtra(Constants.KEY_CLOSE_METHOD, closeMethod);
@@ -419,14 +419,18 @@ public class MyService extends Service implements SensorEventListener {
                 isPluggedAlarmEnabled = value;
                 if (value) {
                     registerPowerConnectedReceiver();
+                    registerPowerDisconnectedReceiver();
                 } else {
                     if (!isChargingAnimationEnabled) unregisterPowerConnectedReceiver();
+                    if (!isUnpluggedAlarmEnabled) unregisterPowerDisconnectedReceiver();
                 }
             } else if (UNPLUGGED_ALARM.equals(key)) {
                 isUnpluggedAlarmEnabled = value;
-                if (value) {
-                    if (isAntiTheftAlarmEnabled) registerPowerDisconnectedReceiver();
-                } else unregisterPowerDisconnectedReceiver();
+                if (value && isAntiTheftAlarmEnabled) {
+                    registerPowerDisconnectedReceiver();
+                } else if (!value && !isPluggedAlarmEnabled) {
+                    unregisterPowerDisconnectedReceiver();
+                }
             } else if (TOUCH_ALARM.equals(key)) {
                 /*if(value) {
                     new Handler().postDelayed(() -> {
@@ -441,15 +445,11 @@ public class MyService extends Service implements SensorEventListener {
                 handleAntiPocketAlarm();
             } else if (ANTI_THEFT_PROTECTION.equals(key)) {
                 isAntiTheftAlarmEnabled = value;
-                if (value) {
-                    if (isUnpluggedAlarmEnabled) registerPowerDisconnectedReceiver();
-                } else {
-                    unregisterPowerDisconnectedReceiver();
-                }
+                if (value && isUnpluggedAlarmEnabled) {
+                    registerPowerDisconnectedReceiver();
+                } else if (!value && !isPluggedAlarmEnabled) unregisterPowerDisconnectedReceiver();
                 handleOnTouchAlarm();
                 handleAntiPocketAlarm();
-            } else if (SOUND_WITH_ANIMATION.equals(key)) {
-                isSoundWithAnimationEnabled = value;
             } else if (SHOW_BATTERY_PERCENTAGE.equals(key)) {
                 isShowBatteryPercentageEnabled = value;
             } else if (SHOW_ON_LOCK_SCREEN.equals(key)) {
@@ -525,51 +525,57 @@ public class MyService extends Service implements SensorEventListener {
     }
 
     public void onChargerDisconnected() {
-        synchronized (lock) {
+        if (isUnpluggedAlarmEnabled && isAntiTheftAlarmEnabled) {
             if (!isAlarmShowing) {
                 showAlarmScreen(Constants.ALARM_TYPE_UNPLUGGED);
                 isAlarmShowing = true;
             }
+        } else if (isPluggedAlarmEnabled) {
+            if (disconnectPreference == null) return;
+            playSound(disconnectPreference);
         }
     }
 
     public void onChargerConnected() {
-        if (connectPreference == null) return;
-        if (isChargingAnimationEnabled) {
-            if (!isAlarmShowing) {
+        if (!isAlarmShowing) {
+            if (isChargingAnimationEnabled) {
                 showAnimationScreen();
-                resetMediaPlayer();
-                if (isSoundWithAnimationEnabled) {
-                    try {
-                        mediaPlayer = new MediaPlayer();
-                        if (Objects.equals(connectPreference.getType(), FileType.ASSET)) {
-                            String fileName = getString(R.string.asset_folder_name) + "/" + connectPreference.getName();
-                            Log.d("TAG", "onReceive: " + fileName);
-                            AssetFileDescriptor descriptor = getAssets().openFd(fileName);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                mediaPlayer.setDataSource(descriptor);
-                            } else {
-                                mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
-                            }
-                            descriptor.close();
-                        } else {
-                            Log.d("TAG", "onChargerConnected: " + connectPreference.getPath());
-                            mediaPlayer.setDataSource(this, Uri.parse(connectPreference.getPath()));
-                        }
-                        mediaPlayer.prepare();
-                        mediaPlayer.start();
-                    } catch (IOException e) {
-                        Log.d("TAG", "onReceive: " + e.getMessage());
-                    }
-                }
             }
-        } else if (isPluggedAlarmEnabled) {
-            synchronized (lock) {
-                if (!isAlarmShowing) {
-                    showAlarmScreen(Constants.ALARM_TYPE_PLUGGED);
-                    isAlarmShowing = true;
-                }
+            if (connectPreference == null) return;
+            if (isPluggedAlarmEnabled) {
+                playSound(connectPreference);
             }
+        }
+    }
+
+    public void showAnimationOnLockScreen(){
+        if (isChargingAnimationEnabled) {
+            showAnimationScreen();
+        }
+    }
+
+    public void playSound(PreferenceModel preferenceModel) {
+        resetMediaPlayer();
+        try {
+            mediaPlayer = new MediaPlayer();
+            if (Objects.equals(preferenceModel.getType(), FileType.ASSET)) {
+                String fileName = getString(R.string.asset_folder_name) + "/" + preferenceModel.getName();
+                Log.d("TAG", "onReceive: " + fileName);
+                AssetFileDescriptor descriptor = getAssets().openFd(fileName);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    mediaPlayer.setDataSource(descriptor);
+                } else {
+                    mediaPlayer.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+                }
+                descriptor.close();
+            } else {
+                Log.d("TAG", "onChargerConnected: " + preferenceModel.getPath());
+                mediaPlayer.setDataSource(this, Uri.parse(preferenceModel.getPath()));
+            }
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            Log.d("TAG", "onReceive: " + e.getMessage());
         }
     }
 
