@@ -101,7 +101,6 @@
     <string name="tab_layout_content_desc">TabLayout</string>
     <string name="searching_loading_text">Searching. Please wait..</string>
     <string name="quick_access">Quick Access</string>
-    <string name="charging_alarm">Charging Alarm</string>
     <string name="charging_animation">Charging Animation</string>
     <string name="anti_theft_protection">Anti-theft Protection</string>
     <string name="battery_info">Battery Info</string>
@@ -153,7 +152,7 @@
     <string name="guide_anti_theft_protection_desc">Anti-theft protection protects your phone by playing alarm when phone is removed from pocket, charger is unplugged or someone touches and move your phone!</string>
     <string name="guide_charging_animation_desc">Play stunning animations when charger is connected. You can download and set ringtones as your liking!</string>
     <string name="guide_all_set_desc">Here you go! You are all set and done! Enjoy!</string>
-    <string name="charging_sounds">Charging Sounds</string>
+    <string name="charging_sound">Charging Sound</string>
     <string name="all_set">You are all set</string>
     <string name="falied_to_play">Failed to play!</string>
     <string name="notification_content_text">For showing charging animations and anti theft protection it is necessary to run the service.</string>

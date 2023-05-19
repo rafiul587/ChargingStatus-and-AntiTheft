@@ -25,6 +25,9 @@ import com.tradplus.ads.open.TradPlusSdk;
 
 import org.json.JSONObject;
 
+import io.reactivex.rxjava3.exceptions.UndeliverableException;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+
 public class MyApplication extends Application {
     // AdNetwork TradPlus,admob,applovin
     //public static  String AdNetwork = "TradPlus";
@@ -68,6 +71,23 @@ public class MyApplication extends Application {
                 AppDatabase.class, getApplicationContext().getString(R.string.room_database_name)
         ).build().fileEntityDao();
         appDataStore = new AppDataStore(getApplicationContext());
+
+        RxJavaPlugins.setErrorHandler(e -> {
+
+            if (e instanceof UndeliverableException) {
+                // As UndeliverableException is a wrapper, get the cause of it to get the "real" exception
+                e = e.getCause();
+                Log.d("TAG", "onCreate: "+ e.getMessage());
+            }
+
+            if (e instanceof InterruptedException) {
+                // fine, some blocking code was interrupted by a dispose call
+                return;
+            }
+
+            Log.e("TAG", "Undeliverable exception received, not sure what to do", e);
+        });
+
         TradPlusSdk.initSdk(MyApplication.this, TADUNIT);
 
         // Enable verbose OneSignal logging to debug issues if needed.

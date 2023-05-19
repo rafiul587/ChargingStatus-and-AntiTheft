@@ -28,7 +28,6 @@ public class AppDataStore {
 
     public static Preferences.Key<String> CONNECT_FILE_KEY = PreferencesKeys.stringKey("connect_file");
     public static Preferences.Key<String> DISCONNECT_FILE_KEY = PreferencesKeys.stringKey("disconnect_file");
-    public static Preferences.Key<Boolean> SOUND_WITH_ANIMATION = PreferencesKeys.booleanKey("sound_with_animation");
     public static Preferences.Key<Boolean> CHARGING_ANIMATION = PreferencesKeys.booleanKey("charging_animation");
     public static Preferences.Key<Boolean> ANTI_THEFT_PROTECTION = PreferencesKeys.booleanKey("anti_theft_protection");
     public static Preferences.Key<Boolean> CHARGING_ALARM = PreferencesKeys.booleanKey("charging_alarm");

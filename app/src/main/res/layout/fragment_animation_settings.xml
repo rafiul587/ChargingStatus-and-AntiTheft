@@ -6,30 +6,7 @@
     android:layout_margin="15dp"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/soundWithAnimation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:text="@string/sound_with_animation"
-        app:layout_constraintEnd_toStartOf="@id/soundWithAnimationSwitch"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-
-    <com.chargingstatusmonitor.souhadev.ui.customview.SwitchCompatEx
-        android:id="@+id/soundWithAnimationSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:switchMinWidth="70dp"
-        android:textOff="Off"
-        android:textOn="On"
-        android:minHeight="30dp"
-        app:layout_constraintBottom_toBottomOf="@id/soundWithAnimation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/soundWithAnimation" />
 
     <TextView
         android:id="@+id/playDuration"
@@ -40,7 +17,7 @@
         android:textColor="@color/black"
         android:text="@string/play_duration"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/soundWithAnimation" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Spinner
         android:id="@+id/playDurationSpinner"

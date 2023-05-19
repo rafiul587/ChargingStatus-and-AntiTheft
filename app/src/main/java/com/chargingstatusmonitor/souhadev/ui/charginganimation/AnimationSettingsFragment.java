@@ -4,10 +4,8 @@ import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.CLOSE_M
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.PLAY_DURATION;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SHOW_BATTERY_PERCENTAGE;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SHOW_ON_LOCK_SCREEN;
-import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.SOUND_WITH_ANIMATION;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,8 @@ import android.widget.AdapterView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.MyApplication;
+import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentAnimationSettingsBinding;
 
 public class AnimationSettingsFragment extends Fragment {
@@ -35,14 +33,10 @@ public class AnimationSettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAnimationSettingsBinding.inflate(inflater, container, false);
         dataStore = ((MyApplication) requireContext().getApplicationContext()).getDataStore();
-        binding.soundWithAnimationSwitch.setChecked(dataStore.getBoolean(SOUND_WITH_ANIMATION, false).blockingFirst());
         binding.batteryPercentageSwitch.setChecked(dataStore.getBoolean(SHOW_BATTERY_PERCENTAGE, true).blockingFirst());
         binding.showOnLockScreenSwitch.setChecked(dataStore.getBoolean(SHOW_ON_LOCK_SCREEN, false).blockingFirst());
         binding.playDurationSpinner.setSelection(dataStore.getIntegerValue(PLAY_DURATION, 0).blockingFirst());
         binding.closeMethodSpinner.setSelection(dataStore.getIntegerValue(CLOSE_METHOD, 1).blockingFirst());
-        binding.soundWithAnimationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            dataStore.saveBooleanValue(SOUND_WITH_ANIMATION, isChecked);
-        });
         binding.batteryPercentageSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             dataStore.saveBooleanValue(AppDataStore.SHOW_BATTERY_PERCENTAGE, isChecked);
         });

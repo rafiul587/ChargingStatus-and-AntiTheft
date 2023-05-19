@@ -15,7 +15,7 @@ public class LockScreenReceiver extends BroadcastReceiver {
         if (action.equals(Intent.ACTION_SCREEN_ON)) {
             KeyguardManager myKM = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
             if (myKM.isKeyguardLocked()) {
-                ((MyService) context).onChargerConnected();
+                ((MyService) context).showAnimationOnLockScreen();
             }
         }
     }
