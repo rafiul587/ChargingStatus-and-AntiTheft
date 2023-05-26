@@ -1,12 +1,9 @@
 package com.chargingstatusmonitor.souhadev.data.remote;
 
-import androidx.annotation.NonNull;
-
 import com.chargingstatusmonitor.souhadev.utils.Constants;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
@@ -17,30 +14,25 @@ import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static volatile RetrofitClient instance;
+    private final Retrofit retrofit;
     private final ArchiveApi archiveApi;
 
     private RetrofitClient() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-
-        Retrofit retrofit = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
         archiveApi = retrofit.create(ArchiveApi.class);
     }
@@ -116,7 +108,6 @@ public class RetrofitClient {
         }, BackpressureStrategy.BUFFER);
     }
 
-
     public Observable<DownloadFileState> downloadFile(String identifier, File directory, String fileName) {
         return Observable.create(emitter -> {
             ResponseBodyListener listener = responseBody -> {
@@ -157,11 +148,7 @@ public class RetrofitClient {
     }
 
     private Retrofit getDownloaderRetrofit(ResponseBodyListener listener) {
-        return new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
-                .client(initHttpDownloadListenerClient(listener))
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+        return retrofit.newBuilder().client(initHttpDownloadListenerClient(listener))
                 .build();
     }
 }

@@ -22,7 +22,8 @@ public class SetPinFragment extends Fragment {
     private FragmentSetPinBinding binding;
     AppDataStore dataStore;
 
-    public SetPinFragment() {}
+    public SetPinFragment() {
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -30,43 +31,13 @@ public class SetPinFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentSetPinBinding.inflate(inflater, container, false);
         dataStore = ((MyApplication) requireContext().getApplicationContext()).getDataStore();
-        binding.btnConfirm.setOnClickListener(v ->{
-            String code = binding.codeEditText.getText() == null ? "" : binding.codeEditText.getText().toString().trim();
-            String confirmCode = binding.confirmEditText.getText() == null ? "" : binding.confirmEditText.getText().toString();
-            if(code.isEmpty()){
-                binding.codeEditText.setError(getString(R.string.error_pin_empty));
-                return;
-            }
-            if(confirmCode.isEmpty()){
-                binding.confirmEditText.setError(getString(R.string.error_pin_empty));
-                return;
-            }
-            if(code.equals(confirmCode)){
-                dataStore.saveStringValue(AppDataStore.ALARM_CLOSING_PIN, code);
-                Toast.makeText(requireContext(), R.string.msg_pin_set_successful, Toast.LENGTH_SHORT).show();
-                NavHostFragment.findNavController(this).popBackStack();
-            }else {
-                binding.error.setVisibility(View.VISIBLE);
-                binding.error.setText(R.string.error_pin_match);
-            }
+        binding.btnConfirm.setOnClickListener(v -> validateAndSetPin());
+        setOnCodeChangeListener();
+        setOnConfirmCodeChangeListener();
+        return binding.getRoot();
+    }
 
-        });
-        binding.codeEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                binding.codeEditText.setError(null);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+    private void setOnConfirmCodeChangeListener() {
         binding.confirmEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -81,10 +52,46 @@ public class SetPinFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
-        return binding.getRoot();
+    }
+
+    private void setOnCodeChangeListener() {
+        binding.codeEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                binding.codeEditText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
+
+    private void validateAndSetPin() {
+        String code = binding.codeEditText.getText() == null ? "" : binding.codeEditText.getText().toString().trim();
+        String confirmCode = binding.confirmEditText.getText() == null ? "" : binding.confirmEditText.getText().toString();
+        if (code.isEmpty()) {
+            binding.codeEditText.setError(getString(R.string.error_pin_empty));
+            return;
+        }
+        if (confirmCode.isEmpty()) {
+            binding.confirmEditText.setError(getString(R.string.error_pin_empty));
+            return;
+        }
+        if (code.equals(confirmCode)) {
+            dataStore.saveStringValue(AppDataStore.ALARM_CLOSING_PIN, code);
+            Toast.makeText(requireContext(), R.string.msg_pin_set_successful, Toast.LENGTH_SHORT).show();
+            NavHostFragment.findNavController(this).popBackStack();
+        } else {
+            binding.error.setVisibility(View.VISIBLE);
+            binding.error.setText(R.string.error_pin_match);
+        }
     }
 
     @Override

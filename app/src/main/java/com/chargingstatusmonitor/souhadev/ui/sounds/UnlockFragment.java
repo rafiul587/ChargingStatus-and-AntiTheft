@@ -1,6 +1,8 @@
 package com.chargingstatusmonitor.souhadev.ui.sounds;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ public class UnlockFragment extends Fragment {
 
     private FileDao dao;
     private int id;
+    private final Handler handler = new Handler(Looper.getMainLooper());
     public UnlockFragment() {
         // Required empty public constructor
     }
@@ -43,7 +46,7 @@ public class UnlockFragment extends Fragment {
             AppExecutors.getInstance().networkIO().execute(() -> {
                 int count = dao.update(id);
                 if (count > 0) {
-                    AppExecutors.getInstance().mainThread().execute(() -> {
+                    handler.post(() -> {
                         binding.text.setText(getString(R.string.success));
                         binding.unlock.setVisibility(View.GONE);
                         binding.ok.setVisibility(View.VISIBLE);
@@ -58,6 +61,7 @@ public class UnlockFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        handler.removeCallbacksAndMessages(null);
         binding = null;
     }
 }

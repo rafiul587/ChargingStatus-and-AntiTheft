@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -47,6 +49,7 @@ public class MyRecordsFragment extends Fragment implements MyRecordsAdapter.OnIt
     List<FileModel> records = new ArrayList<>();
     MyRecordsAdapter adapter;
     MediaPlayer mediaPlayer = new MediaPlayer();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     AppDataStore dataStore;
 
@@ -143,7 +146,7 @@ public class MyRecordsFragment extends Fragment implements MyRecordsAdapter.OnIt
                 }
             }
             Log.d("TAG", "getMyRecords: " + recordingList);
-            AppExecutors.getInstance().mainThread().execute(() -> {
+            handler.post(() -> {
                 records.clear();
                 records.addAll(recordingList);
                 adapter.notifyDataSetChanged();
@@ -179,6 +182,7 @@ public class MyRecordsFragment extends Fragment implements MyRecordsAdapter.OnIt
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        handler.removeCallbacksAndMessages(null);
         binding = null;
     }
 

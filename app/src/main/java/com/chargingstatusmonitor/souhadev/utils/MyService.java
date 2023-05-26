@@ -67,10 +67,6 @@ public class MyService extends Service implements SensorEventListener {
     private PowerConnectedReceiver connectedReceiver;
     private CompositeDisposable disposable = new CompositeDisposable();
     private SensorManager sensorManager;
-
-    private float[] gravity;
-    private float[] linearAcceleration;
-    float[] g = {0, 0, 0};
     AppDataStore dataStore;
 
     private boolean isChargingAnimationEnabled = true;
@@ -94,7 +90,6 @@ public class MyService extends Service implements SensorEventListener {
     private boolean isAlarmShowing = false;
     boolean isPocket = false;
 
-    private float[] mGravity;
     private float mAccel;
     private float mAccelCurrent;
     private float mAccelLast;
@@ -155,19 +150,16 @@ public class MyService extends Service implements SensorEventListener {
                 });
 
         Disposable soundFileDisposable = observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pair -> {
-                    AppExecutors.getInstance().mainThread().execute(() -> {
-                        Log.d("TAG", "onStartCommand: " + pair.first.getName() + ", " + pair.second.getName());
-                        connectPreference = pair.first;
-                        disconnectPreference = pair.second;
-                    });
+                    Log.d("TAG", "onStartCommand: " + pair.first.getName() + ", " + pair.second.getName());
+                    connectPreference = pair.first;
+                    disconnectPreference = pair.second;
                 });
         disposable.add(soundFileDisposable);
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        gravity = new float[3];
-        linearAcceleration = new float[3];
     }
 
     @Override
@@ -243,33 +235,10 @@ public class MyService extends Service implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        /*if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-            float acceleration = (float) Math.sqrt(event.values[0] * event.values[0] + event.values[1] * event.values[1] + event.values[2] * event.values[2]);
-            Log.d("MainActivity", "Device moved!" + event.values[0]+","+event.values[1]+","+event.values[2]);
-            if (acceleration > THRESHOLD) {
-                Log.d("MainActivity", "Device moved!" + acceleration);
-                // Do something here when movement or displacement is detected
-                if (!isAlarmShowing && !isPocket) {
-                    showAlarmScreen(Sensor.TYPE_LINEAR_ACCELERATION);
-                }
 
-            }
-        }*/
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-
-           /* final float alpha = 0.8f;
-
-            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
-            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
-            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
-
-            linearAcceleration[0] = event.values[0] - gravity[0];
-            linearAcceleration[1] = event.values[1] - gravity[1];
-            linearAcceleration[2] = event.values[2] - gravity[2];
-
-            float acceleration = (float) Math.sqrt(linearAcceleration[0] * linearAcceleration[0] + linearAcceleration[1] * linearAcceleration[1] + linearAcceleration[2] * linearAcceleration[2]);*/
-            mGravity = event.values.clone();
-            // Shake detection
+            float[] mGravity = event.values.clone();
+            // move detection
             float x = mGravity[0];
             float y = mGravity[1];
             float z = mGravity[2];
@@ -277,11 +246,6 @@ public class MyService extends Service implements SensorEventListener {
             mAccelCurrent = (float) Math.sqrt(x * x + y * y + z * z);
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta;
-            // Make this higher or lower according to how much
-            // motion you want to detect
-
-            //Log.d("MainActivity", "Device moved!" + mAccel);
-            //Log.d("MainActivity", "Device moved!" + linearAcceleration[0]+","+linearAcceleration[1]+","+linearAcceleration[2]);
             if (mAccel > MOVEMENT_THRESHOLD) {
                 synchronized (lock) {
                     if (!isAlarmShowing && !isPocket) {
@@ -295,7 +259,6 @@ public class MyService extends Service implements SensorEventListener {
         }
 
         if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-            //Log.d("TAG", "onSensorChanged: " + event.values[0] + proximity.getMaximumRange());
             synchronized (lock) {
                 if (!isAlarmShowing && isPocket) {
                     showAlarmScreen(Sensor.TYPE_PROXIMITY);
@@ -311,17 +274,7 @@ public class MyService extends Service implements SensorEventListener {
                 }
             }
         }
-
-        /*if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
-            Log.d("TAG", "onSensorChanged: " + event.values[0] + shouldPlayAlarm + isPocket);
-            if (event.values[0] < 5 && isPocket) {
-                shouldPlayAlarm = true;
-            } else {
-
-            }
-        }*/
     }
-
 
     private void registerPowerConnectedReceiver() {
         if (connectedReceiver == null) {
@@ -432,12 +385,6 @@ public class MyService extends Service implements SensorEventListener {
                     unregisterPowerDisconnectedReceiver();
                 }
             } else if (TOUCH_ALARM.equals(key)) {
-                /*if(value) {
-                    new Handler().postDelayed(() -> {
-                        isTouchAlarmEnabled = true;
-                        handleOnTouchAlarm();
-                    }, 10000);
-                }else {*/
                 isTouchAlarmEnabled = value;
                 handleOnTouchAlarm();
             } else if (ANTI_POCKET_ALARM.equals(key)) {
@@ -460,13 +407,16 @@ public class MyService extends Service implements SensorEventListener {
 
 
     public Disposable getStringDisposable(Preferences.Key<String> key) {
-        return dataStore.getStringValue(key).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(value -> {
-            if (ALARM_CLOSING_PIN.equals(key)) {
-                alarmClosingPing = value;
-            } else if (SELECTED_ANIMATION_NAME.equals(key)) {
-                selectedAnimation = value.isEmpty() ? Constants.DEFAULT_ANIMATION : value;
-            }
-        });
+        return dataStore.getStringValue(key)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(value -> {
+                    if (ALARM_CLOSING_PIN.equals(key)) {
+                        alarmClosingPing = value;
+                    } else if (SELECTED_ANIMATION_NAME.equals(key)) {
+                        selectedAnimation = value.isEmpty() ? Constants.DEFAULT_ANIMATION : value;
+                    }
+                });
     }
 
     public Disposable getIntegerDisposable(Preferences.Key<Integer> key, int defaultValue) {
@@ -548,7 +498,7 @@ public class MyService extends Service implements SensorEventListener {
         }
     }
 
-    public void showAnimationOnLockScreen(){
+    public void showAnimationOnLockScreen() {
         if (isChargingAnimationEnabled) {
             showAnimationScreen();
         }

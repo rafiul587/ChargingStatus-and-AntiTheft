@@ -33,27 +33,24 @@ public class AnimationSettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentAnimationSettingsBinding.inflate(inflater, container, false);
         dataStore = ((MyApplication) requireContext().getApplicationContext()).getDataStore();
+
         binding.batteryPercentageSwitch.setChecked(dataStore.getBoolean(SHOW_BATTERY_PERCENTAGE, true).blockingFirst());
         binding.showOnLockScreenSwitch.setChecked(dataStore.getBoolean(SHOW_ON_LOCK_SCREEN, false).blockingFirst());
         binding.playDurationSpinner.setSelection(dataStore.getIntegerValue(PLAY_DURATION, 0).blockingFirst());
         binding.closeMethodSpinner.setSelection(dataStore.getIntegerValue(CLOSE_METHOD, 1).blockingFirst());
+
         binding.batteryPercentageSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             dataStore.saveBooleanValue(AppDataStore.SHOW_BATTERY_PERCENTAGE, isChecked);
         });
         binding.showOnLockScreenSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             dataStore.saveBooleanValue(AppDataStore.SHOW_ON_LOCK_SCREEN, isChecked);
         });
-        binding.playDurationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                dataStore.saveIntegerValue(AppDataStore.PLAY_DURATION, position);
-            }
+        setPlayDurationChangeListener();
+        setCloseMethodChangeListener();
+        return binding.getRoot();
+    }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+    private void setCloseMethodChangeListener() {
         binding.closeMethodSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -65,7 +62,20 @@ public class AnimationSettingsFragment extends Fragment {
 
             }
         });
-        return binding.getRoot();
+    }
+
+    private void setPlayDurationChangeListener() {
+        binding.playDurationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                dataStore.saveIntegerValue(AppDataStore.PLAY_DURATION, position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override

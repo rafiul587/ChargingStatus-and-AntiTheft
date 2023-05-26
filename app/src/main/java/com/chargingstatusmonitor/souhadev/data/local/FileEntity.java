@@ -18,9 +18,9 @@ public class FileEntity {
 
     private String duration;
 
-    private boolean isLocked;
+    private final boolean isLocked;
     @Ignore
-    private boolean isPlaying = false;
+    private final boolean isPlaying = false;
 
     public FileEntity(String name, String type, String uri, String duration, boolean isLocked) {
         this.name = name;
@@ -72,17 +72,5 @@ public class FileEntity {
 
     public boolean isLocked() {
         return isLocked;
-    }
-
-    public void setLocked(boolean locked) {
-        isLocked = locked;
-    }
-
-    public boolean isPlaying() {
-        return isPlaying;
-    }
-
-    public void setPlaying(boolean playing) {
-        isPlaying = playing;
     }
 }

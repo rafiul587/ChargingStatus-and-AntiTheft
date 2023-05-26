@@ -31,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class FileUtils {
+
     public static void startDownload(Context context, String fileName) {
         AppExecutors.getInstance().networkIO().execute(() -> {
             File directoryTest = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), context.getString(R.string.download_folder_name));

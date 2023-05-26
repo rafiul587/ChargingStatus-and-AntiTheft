@@ -10,13 +10,9 @@ import java.util.Objects;
 public class ApiResponse {
     @SerializedName("result")
     @Expose
-    private List<Result> result;
+    private final List<Result> result;
 
-    public List<Result> getResult() {
-        return result;
-    }
-
-    public void setResult(List<Result> result) {
+    public ApiResponse(List<Result> result) {
         this.result = result;
     }
 

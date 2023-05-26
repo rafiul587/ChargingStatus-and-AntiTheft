@@ -36,7 +36,7 @@
         android:textAlignment="center"
         android:layout_marginTop="10dp"
         android:textColor="@color/green_200"
-        app:layout_constraintTop_toBottomOf="@id/setPinText"
+        app:layout_constraintTop_toBottomOf="@id/divider"
         android:text="@string/why_pin_desc"/>
 
     <TextView

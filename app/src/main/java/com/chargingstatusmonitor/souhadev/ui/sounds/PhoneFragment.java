@@ -3,24 +3,19 @@ package com.chargingstatusmonitor.souhadev.ui.sounds;
 import static com.chargingstatusmonitor.souhadev.utils.FileUtils.getDuration;
 import static com.chargingstatusmonitor.souhadev.utils.FileUtils.playRecording;
 import static com.chargingstatusmonitor.souhadev.utils.FileUtils.showDialog;
-import static com.chargingstatusmonitor.souhadev.utils.PermissionUtils.READ_PERMISSION_CODE;
-import static com.chargingstatusmonitor.souhadev.utils.PermissionUtils.hasPermission;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,16 +23,15 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
-import com.chargingstatusmonitor.souhadev.utils.AppExecutors;
 import com.chargingstatusmonitor.souhadev.MyApplication;
 import com.chargingstatusmonitor.souhadev.R;
+import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.data.local.FileDao;
 import com.chargingstatusmonitor.souhadev.data.local.FileEntity;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentPhoneBinding;
+import com.chargingstatusmonitor.souhadev.utils.AppExecutors;
 import com.chargingstatusmonitor.souhadev.utils.Constants;
 import com.chargingstatusmonitor.souhadev.utils.FileType;
-import com.chargingstatusmonitor.souhadev.utils.PermissionUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,6 +45,7 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
     AppDataStore dataStore;
     NavController navController;
     MediaPlayer mediaPlayer;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     public PhoneFragment() {
         // Required empty public constructor
@@ -91,6 +86,7 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
     public void onDestroyView() {
         super.onDestroyView();
         mediaPlayer.release();
+        handler.removeCallbacksAndMessages(null);
         binding = null;
     }
 
@@ -159,17 +155,17 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
 
                     mmr.release();
                     dao.insertAll(list);
-                    AppExecutors.getInstance().mainThread().execute(() -> {
-                        Log.d("TAG", "getRingtonesFromPhone: "+ list.toString());
+                    handler.post(() -> {
                         if (list.isEmpty()) {
                             binding.loadingText.setVisibility(View.VISIBLE);
                             binding.loadingText.setText(getString(R.string.no_ringtones));
-                        } else binding.loadingText.setVisibility(View.GONE);
-
+                        } else {
+                            binding.loadingText.setVisibility(View.GONE);
+                        }
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
-                    AppExecutors.getInstance().mainThread().execute(() -> {
+                    handler.post(() -> {
                         binding.loadingText.setVisibility(View.VISIBLE);
                         binding.loadingText.setText(getString(R.string.something_wrong));
 
@@ -177,7 +173,7 @@ public class PhoneFragment extends Fragment implements RingtonesAdapter.OnItemCl
                 }
 
             }else {
-                AppExecutors.getInstance().mainThread().execute(() -> {
+                handler.post(() -> {
                     binding.loadingText.setVisibility(View.GONE);
                 });
             }

@@ -24,7 +24,6 @@ public class BatteryInfoFragment extends Fragment implements BatteryListener {
 
     BatteryInfoReceiver batteryInfoReceiver;
 
-
     public BatteryInfoFragment() {
     }
 
@@ -64,123 +63,27 @@ public class BatteryInfoFragment extends Fragment implements BatteryListener {
         boolean isExtraPresent = intent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, false);
 
         if (isExtraPresent) {
-            int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 0);
-            int healthCondition;
-
-            switch (health) {
-                case BatteryManager.BATTERY_HEALTH_COLD:
-                    healthCondition = R.string.battery_health_cold;
-                    break;
-
-                case BatteryManager.BATTERY_HEALTH_DEAD:
-                    healthCondition = R.string.battery_health_dead;
-                    break;
-
-                case BatteryManager.BATTERY_HEALTH_GOOD:
-                    healthCondition = R.string.battery_health_good;
-                    break;
-
-                case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
-                    healthCondition = R.string.battery_health_over_voltage;
-                    break;
-
-                case BatteryManager.BATTERY_HEALTH_OVERHEAT:
-                    healthCondition = R.string.battery_health_overheat;
-                    break;
-
-                case BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE:
-                    healthCondition = R.string.battery_health_unspecified_failure;
-                    break;
-
-                case BatteryManager.BATTERY_HEALTH_UNKNOWN:
-                default:
-                    healthCondition = R.string.battery_health_unknown;
-                    break;
-            }
-
-            binding.health.setText(getString(healthCondition));
-
-            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-            int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-
-            if (level != -1 && scale != -1) {
-                int batteryPct = (int) ((level / (float) scale) * 100f);
-                binding.batteryLevel.setText(batteryPct + " %");
-                binding.batteryLevelWave.setProgressValue(batteryPct);
-            }
-
-            int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
-            int chargingType = R.string.battery_plugged_none;
-
-            switch (plugged) {
-                case BatteryManager.BATTERY_PLUGGED_WIRELESS:
-                    chargingType = R.string.battery_plugged_wireless;
-                    break;
-
-                case BatteryManager.BATTERY_PLUGGED_USB:
-                    chargingType = R.string.battery_plugged_usb;
-                    break;
-
-                case BatteryManager.BATTERY_PLUGGED_AC:
-                    chargingType = R.string.battery_plugged_ac;
-                    break;
-
-                default:
-                    break;
-            }
-
-            binding.chargingType.setText(getString(chargingType));
-
-            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            int chargingStatus;
-
-            switch (status) {
-                case BatteryManager.BATTERY_STATUS_CHARGING:
-                    chargingStatus = R.string.battery_status_charging;
-                    break;
-
-                case BatteryManager.BATTERY_STATUS_FULL:
-                    chargingStatus = R.string.battery_status_full;
-                    break;
-
-                case BatteryManager.BATTERY_STATUS_UNKNOWN:
-                    chargingStatus = R.string.battery_status_unknown;
-                    break;
-                case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
-                case BatteryManager.BATTERY_STATUS_DISCHARGING:
-                default:
-                    chargingStatus = R.string.battery_status_discharging;
-                    break;
-            }
-
-            binding.status.setText(getString(chargingStatus));
-
-            if (intent.getExtras() != null) {
-                String technology = intent.getExtras().getString(BatteryManager.EXTRA_TECHNOLOGY);
-
-                if (!"".equals(technology)) {
-                    binding.moreInfoLayout.technology.setText(technology);
-                } else
-                    binding.moreInfoLayout.technology.setText(getString(R.string.battery_health_unknown));
-            }
+            setBatteryHealth(intent);
+            setBatteryLevel(intent);
+            setChargingType(intent);
+            setChargingStatus(intent);
+            setBatteryTechnology(intent);
 
             int temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0);
+            int voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0);
+            double capacity = getBatteryCapacity(requireContext());
 
             if (temperature > 0) {
                 float temp = ((float) temperature) / 10f;
-                binding.moreInfoLayout.temperature.setText(temp + "°C");
+                binding.moreInfoLayout.temperature.setText(temp + " " + getString(R.string.unit_temperature));
             }
-
-            int voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0);
 
             if (voltage > 0) {
-                binding.moreInfoLayout.voltage.setText(voltage + " mV");
+                binding.moreInfoLayout.voltage.setText(voltage + " "+ getString(R.string.unit_volt));
             }
 
-            double capacity = getBatteryCapacity(requireContext());
-
             if (capacity > 0) {
-                binding.moreInfoLayout.capacity.setText(capacity + " mAh");
+                binding.moreInfoLayout.capacity.setText(capacity + " "+ getString(R.string.unit_capacity));
             }
 
         } else {
@@ -188,15 +91,115 @@ public class BatteryInfoFragment extends Fragment implements BatteryListener {
         }
     }
 
-    /*public long getBatteryCapacity(Context context) {
-        BatteryManager mBatteryManager = (BatteryManager) context.getSystemService(Context.BATTERY_SERVICE);
-        int chargeCounter = mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CHARGE_COUNTER);
-        int capacity = mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
 
-        if(chargeCounter == Integer.MIN_VALUE || capacity == Integer.MIN_VALUE) return 0;
 
-        return (chargeCounter/capacity) * 100L;
-    }*/
+    private void setBatteryTechnology(Intent intent) {
+        if (intent.getExtras() != null) {
+            String technology = intent.getExtras().getString(BatteryManager.EXTRA_TECHNOLOGY);
+
+            if (!"".equals(technology)) {
+                binding.moreInfoLayout.technology.setText(technology);
+            } else
+                binding.moreInfoLayout.technology.setText(getString(R.string.battery_health_unknown));
+        }
+    }
+
+    private void setBatteryLevel(Intent intent) {
+        int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+
+        if (level != -1 && scale != -1) {
+            int batteryPct = (int) ((level / (float) scale) * 100f);
+            binding.batteryLevel.setText(batteryPct + " %");
+            binding.batteryLevelWave.setProgressValue(batteryPct);
+        }
+    }
+
+    private void setChargingStatus(Intent intent) {
+        int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+        int chargingStatus;
+
+        switch (status) {
+            case BatteryManager.BATTERY_STATUS_CHARGING:
+                chargingStatus = R.string.battery_status_charging;
+                break;
+
+            case BatteryManager.BATTERY_STATUS_FULL:
+                chargingStatus = R.string.battery_status_full;
+                break;
+
+            case BatteryManager.BATTERY_STATUS_UNKNOWN:
+                chargingStatus = R.string.battery_status_unknown;
+                break;
+            case BatteryManager.BATTERY_STATUS_NOT_CHARGING:
+            case BatteryManager.BATTERY_STATUS_DISCHARGING:
+            default:
+                chargingStatus = R.string.battery_status_discharging;
+                break;
+        }
+
+        binding.status.setText(getString(chargingStatus));
+    }
+
+    private void setChargingType(Intent intent) {
+        int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
+        int chargingType = R.string.battery_plugged_none;
+
+        switch (plugged) {
+            case BatteryManager.BATTERY_PLUGGED_WIRELESS:
+                chargingType = R.string.battery_plugged_wireless;
+                break;
+
+            case BatteryManager.BATTERY_PLUGGED_USB:
+                chargingType = R.string.battery_plugged_usb;
+                break;
+
+            case BatteryManager.BATTERY_PLUGGED_AC:
+                chargingType = R.string.battery_plugged_ac;
+                break;
+
+            default:
+                break;
+        }
+        binding.chargingType.setText(getString(chargingType));
+    }
+
+    private void setBatteryHealth(Intent intent) {
+        int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 0);
+        int healthCondition;
+
+        switch (health) {
+            case BatteryManager.BATTERY_HEALTH_COLD:
+                healthCondition = R.string.battery_health_cold;
+                break;
+
+            case BatteryManager.BATTERY_HEALTH_DEAD:
+                healthCondition = R.string.battery_health_dead;
+                break;
+
+            case BatteryManager.BATTERY_HEALTH_GOOD:
+                healthCondition = R.string.battery_health_good;
+                break;
+
+            case BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE:
+                healthCondition = R.string.battery_health_over_voltage;
+                break;
+
+            case BatteryManager.BATTERY_HEALTH_OVERHEAT:
+                healthCondition = R.string.battery_health_overheat;
+                break;
+
+            case BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE:
+                healthCondition = R.string.battery_health_unspecified_failure;
+                break;
+
+            case BatteryManager.BATTERY_HEALTH_UNKNOWN:
+            default:
+                healthCondition = R.string.battery_health_unknown;
+                break;
+        }
+        binding.health.setText(getString(healthCondition));
+    }
 
     public double getBatteryCapacity(Context context) {
         Object mPowerProfile;

@@ -3,27 +3,27 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/asset_19__2_"
+        android:icon="@drawable/ic_home"
         android:title="@string/home_screen_title" />
 
     <item
         android:id="@+id/navigation_battery_info"
-        android:icon="@drawable/asset_21"
+        android:icon="@drawable/ic_battery_info"
         android:title="@string/battery_info_screen_title" />
 
     <item
         android:id="@+id/navigation_animation_graph"
-        android:icon="@drawable/asset_20"
+        android:icon="@drawable/ic_charging_animation"
         android:title="@string/charging_animation_screen_title" />
 
     <item
         android:id="@+id/navigation_ringtone_graph"
-        android:icon="@drawable/asset_17"
+        android:icon="@drawable/ic_charging_sound"
         android:title="@string/ringtone_screen_title" />
 
     <item
         android:id="@+id/navigation_anti_theft_graph"
-        android:icon="@drawable/asset_20__2_"
+        android:icon="@drawable/ic_anti_theft_protection"
         android:title="@string/anti_theft_screen_title" />
 
 </menu>

@@ -58,9 +58,67 @@ public class HomeFragment extends Fragment {
         disposable = new CompositeDisposable();
         selectedAlarmList = new ArrayList<>();
         dataStore = ((MyApplication) requireContext().getApplicationContext()).getDataStore();
-        binding.chargingAlarmSwitch.setChecked(dataStore.getBoolean(CHARGING_ALARM, false).blockingFirst());
-        binding.chargingAnimationSwitch.setChecked(dataStore.getBoolean(CHARGING_ANIMATION, true).blockingFirst());
-        binding.antiTheftProtectionSwitch.setChecked(dataStore.getBoolean(ANTI_THEFT_PROTECTION, false).blockingFirst());
+
+        Boolean isChargingAlarmChecked = dataStore.getBoolean(CHARGING_ALARM, false).blockingFirst();
+        binding.chargingAlarmSwitch.setChecked(isChargingAlarmChecked);
+
+        Boolean isChargingAnimationEnabled = dataStore.getBoolean(CHARGING_ANIMATION, true).blockingFirst();
+        binding.chargingAnimationSwitch.setChecked(isChargingAnimationEnabled);
+
+        Boolean isAntiTheftProtectionEnabled = dataStore.getBoolean(ANTI_THEFT_PROTECTION, false).blockingFirst();
+        binding.antiTheftProtectionSwitch.setChecked(isAntiTheftProtectionEnabled);
+
+        alarmClosingPin = dataStore.getStringValue(ALARM_CLOSING_PIN).blockingFirst();
+
+        addSwitchValueObservers();
+
+        binding.chargingAlarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            dataStore.saveBooleanValue(CHARGING_ALARM, isChecked);
+        });
+        binding.chargingAnimationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            dataStore.saveBooleanValue(CHARGING_ANIMATION, isChecked);
+        });
+        binding.antiTheftProtectionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+
+            if (isChecked && alarmClosingPin.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.set_pin_first), Toast.LENGTH_SHORT).show();
+                ((MainActivity) requireActivity()).goToAntiTheftSection();
+                buttonView.setChecked(false);
+                return;
+            }
+
+            if (buttonView.isPressed() && isChecked && (isTouchAlarmEnabled || isAntiPocketAlarmEnabled)) {
+                showCountDownTimer();
+            } else {
+                dataStore.saveBooleanValue(ANTI_THEFT_PROTECTION, isChecked);
+            }
+
+        });
+
+        binding.startOrStopServiceSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                startAppService();
+            } else {
+                requireContext().stopService(new Intent(requireContext(), MyService.class));
+            }
+        });
+
+        return binding.getRoot();
+    }
+
+    private void showCountDownTimer() {
+        CountDownTimerFragment dialogFragment = CountDownTimerFragment.newInstance(ANTI_THEFT_PROTECTION.getName());
+        dialogFragment.show(getChildFragmentManager(), "timer_dialog");
+    }
+
+    public void startAppService() {
+        Intent intent = new Intent(requireContext(), MyService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            requireContext().startForegroundService(intent);
+        } else requireContext().startService(intent);
+    }
+
+    private void addSwitchValueObservers() {
         disposable.add(dataStore.getBoolean(UNPLUGGED_ALARM, false)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,47 +143,6 @@ public class HomeFragment extends Fragment {
                     Log.d("TAG", "onCreateView: antipocket" + value + "," + selectedAlarmList);
                     updateAlarmsText();
                 }));
-        alarmClosingPin = dataStore.getStringValue(ALARM_CLOSING_PIN).blockingFirst();
-        binding.chargingAlarmSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            dataStore.saveBooleanValue(CHARGING_ALARM, isChecked);
-        });
-        binding.chargingAnimationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            dataStore.saveBooleanValue(CHARGING_ANIMATION, isChecked);
-        });
-        binding.antiTheftProtectionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked && alarmClosingPin.isEmpty()) {
-                Toast.makeText(requireContext(), getString(R.string.set_pin_first), Toast.LENGTH_SHORT).show();
-                ((MainActivity) requireActivity()).goToAntiTheftSection();
-                buttonView.setChecked(false);
-                return;
-            }
-
-            if (buttonView.isPressed()) {
-                if (isChecked) {
-                    if (isTouchAlarmEnabled || isAntiPocketAlarmEnabled) {
-                        CountDownTimerFragment dialogFragment = CountDownTimerFragment.newInstance(ANTI_THEFT_PROTECTION.getName());
-                        dialogFragment.show(getChildFragmentManager(), "timer_dialog");
-                    } else dataStore.saveBooleanValue(ANTI_THEFT_PROTECTION, true);
-                } else {
-                    dataStore.saveBooleanValue(ANTI_THEFT_PROTECTION, false);
-                }
-            } else {
-                dataStore.saveBooleanValue(ANTI_THEFT_PROTECTION, isChecked);
-            }
-        });
-
-        binding.startOrStopServiceSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                Intent intent = new Intent(requireContext(), MyService.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    requireContext().startForegroundService(intent);
-                } else requireContext().startService(intent);
-
-            } else {
-                requireContext().stopService(new Intent(requireContext(), MyService.class));
-            }
-        });
-        return binding.getRoot();
     }
 
     public void setServiceSwitchInitialState() {

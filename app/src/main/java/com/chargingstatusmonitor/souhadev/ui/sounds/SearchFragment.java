@@ -7,6 +7,8 @@ import static com.chargingstatusmonitor.souhadev.utils.FileUtils.startDownload;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -36,6 +38,7 @@ public class SearchFragment extends Fragment implements RingtonesAdapter.OnItemC
 
     RingtonesAdapter adapter;
     List<FileEntity> fileModels = new ArrayList<>();
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
     FileDao dao;
     AppDataStore dataStore;
@@ -68,7 +71,7 @@ public class SearchFragment extends Fragment implements RingtonesAdapter.OnItemC
             public void afterTextChanged(Editable s) {
                 AppExecutors.getInstance().networkIO().execute(() -> {
                     List<FileEntity> list = dao.findByName("%" + s.toString() + "%");
-                    AppExecutors.getInstance().mainThread().execute(() -> {
+                    handler.post(() -> {
                         if (binding.searchBox.getText().length() > 0) {
                             if (list.isEmpty()) {
                                 binding.emptyLayout.setVisibility(View.VISIBLE);
@@ -106,6 +109,7 @@ public class SearchFragment extends Fragment implements RingtonesAdapter.OnItemC
     public void onDestroyView() {
         super.onDestroyView();
         mediaPlayer.release();
+        handler.removeCallbacksAndMessages(null);
         binding = null;
     }
 

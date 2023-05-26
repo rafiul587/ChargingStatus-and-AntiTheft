@@ -47,6 +47,39 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+
+        handlePermissions();
+        handleNavigation();
+        startAppService();
+    }
+
+    private void startAppService(){
+        if (serviceIntent == null) {
+            // start service
+            serviceIntent = new Intent(this, MyService.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(serviceIntent);
+            } else startService(serviceIntent);
+            setServiceSwitchInitialState();
+        }
+    }
+
+    private void handleNavigation() {
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_home, R.id.navigation_battery_info, R.id.navigation_animation_list, R.id.navigation_ringtone, R.id.navigation_anti_theft).build();
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
+
+        NavigationUI.setupWithNavController(binding.navView, navController);
+        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            if (navDestination.getId() == R.id.navigation_home || navDestination.getId() == R.id.navigation_battery_info || navDestination.getId() == R.id.navigation_animation_list || navDestination.getId() == R.id.navigation_ringtone || navDestination.getId() == R.id.navigation_anti_theft) {
+                binding.toolbar.setNavigationIcon(null);
+            } else {
+                binding.toolbar.setNavigationIcon(R.drawable.ic_navigation_back);
+            }
+        });
+    }
+
+    private void handlePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions = new String[]{Manifest.permission.READ_MEDIA_AUDIO, Manifest.permission.RECORD_AUDIO};
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -64,29 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(permissions, REQUEST_CODE_PERMISSIONS);
             }
         }
-
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.navigation_home, R.id.navigation_battery_info, R.id.navigation_animation_list, R.id.navigation_ringtone, R.id.navigation_anti_theft).build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupWithNavController(binding.toolbar, navController, appBarConfiguration);
-
-        NavigationUI.setupWithNavController(binding.navView, navController);
-        navController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-            if (navDestination.getId() == R.id.navigation_home || navDestination.getId() == R.id.navigation_battery_info || navDestination.getId() == R.id.navigation_animation_list || navDestination.getId() == R.id.navigation_ringtone || navDestination.getId() == R.id.navigation_anti_theft) {
-                binding.toolbar.setNavigationIcon(null);
-            } else {
-                binding.toolbar.setNavigationIcon(R.drawable.ic_navigation_back);
-            }
-        });
-        if (serviceIntent == null) {
-            // start service
-            serviceIntent = new Intent(this, MyService.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                startForegroundService(serviceIntent);
-            } else startService(serviceIntent);
-            setServiceSwitchInitialState();
-        }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -160,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -203,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         if (navHostFragment != null) {
             Fragment fragment = navHostFragment.getChildFragmentManager().getFragments().get(0);
             if (fragment instanceof HomeFragment) {
-                Log.d("TAG", "setServiceSwitchInitialState: ");
                 ((HomeFragment) fragment).setServiceSwitchInitialState();
             }
         }

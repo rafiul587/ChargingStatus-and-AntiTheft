@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,7 +27,7 @@
         android:textColor="@color/green_700"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:background="@drawable/bg_rectangle_button_gradient_greenish"/>
+        android:background="@drawable/bg_button_gradient_greenish_round_25"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/ok"
@@ -41,6 +40,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:visibility="gone"
-        android:background="@drawable/bg_rectangle_button_gradient_greenish"/>
+        android:background="@drawable/bg_button_gradient_greenish_round_25"/>
 
 </LinearLayout>

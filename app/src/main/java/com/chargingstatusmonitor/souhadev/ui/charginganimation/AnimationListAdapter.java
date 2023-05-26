@@ -75,7 +75,7 @@ public class AnimationListAdapter extends RecyclerView.Adapter<AnimationListAdap
                     .into(viewHolder.animationImageView);
             if (isDefaultSelected) {
                 viewHolder.download.setVisibility(View.VISIBLE);
-                viewHolder.download.setImageResource(R.drawable.ic_selected);
+                viewHolder.download.setImageResource(R.drawable.ic_selected_animation);
             } else viewHolder.download.setVisibility(View.GONE);
             return;
         }
@@ -90,7 +90,7 @@ public class AnimationListAdapter extends RecyclerView.Adapter<AnimationListAdap
         if (animation.getProgress() == 100f) {
             if (animation.isSelected()) {
                 viewHolder.download.setVisibility(View.VISIBLE);
-                viewHolder.download.setImageResource(R.drawable.ic_selected);
+                viewHolder.download.setImageResource(R.drawable.ic_selected_animation);
             } else viewHolder.download.setVisibility(View.GONE);
         } else {
             viewHolder.download.setVisibility(View.VISIBLE);

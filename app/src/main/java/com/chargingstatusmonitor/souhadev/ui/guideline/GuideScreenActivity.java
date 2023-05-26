@@ -41,6 +41,7 @@ public class GuideScreenActivity extends AppCompatActivity {
         binding = ActivityGuideScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         binding.viewPager.setAdapter(new GuideLineViewPagerAdapter(this));
+
         binding.next.setOnClickListener(v -> {
             if(binding.viewPager.getCurrentItem() == 4){
                 startActivity(new Intent(this, MainActivity.class));

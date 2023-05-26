@@ -14,27 +14,24 @@ import java.util.List;
 
 public class GuideLineViewPagerAdapter extends FragmentStateAdapter {
 
-    List<GuideLine> guideLines;
+    List<GuideLine> guideLines = new ArrayList<>();
 
     public GuideLineViewPagerAdapter(@NonNull FragmentActivity activity) {
         super(activity);
-        guideLines = initGuideLineModels();
+        initGuideLineModels();
     }
 
-    private List<GuideLine> initGuideLineModels() {
+    private void initGuideLineModels() {
+        addGuideLine(R.drawable.ic_starting_guide_battery_info, R.string.battery_info, R.string.guide_batter_info_desc);
+        addGuideLine(R.drawable.ic_starting_guide_charging_sound, R.string.charging_sound, R.string.guide_charging_sounds_desc);
+        addGuideLine(R.drawable.ic_starting_guide_anti_theft, R.string.anti_theft_protection, R.string.guide_anti_theft_protection_desc);
+        addGuideLine(R.drawable.ic_starting_guide_charging_animation, R.string.charging_animation, R.string.guide_charging_animation_desc);
+        addGuideLine(R.drawable.ic_starting_guide_complete, R.string.all_set, R.string.guide_all_set_desc);
+    }
 
-        GuideLine guideLine1 = new GuideLine(R.drawable.ic_starting_guide_battery_info, R.string.battery_info, R.string.guide_batter_info_desc);
-        GuideLine guideLine2 = new GuideLine(R.drawable.ic_starting_guide_charging_sound,R.string.charging_sound, R.string.guide_charging_sounds_desc);
-        GuideLine guideLine3 = new GuideLine(R.drawable.ic_starting_guide_anti_theft,R.string.anti_theft_protection, R.string.guide_anti_theft_protection_desc);
-        GuideLine guideLine4 = new GuideLine(R.drawable.ic_starting_guide_charging_animation,  R.string.charging_animation, R.string.guide_charging_animation_desc);
-        GuideLine guideLine5 = new GuideLine(R.drawable.ic_starting_guide_complete, R.string.all_set, R.string.guide_all_set_desc);
-        List<GuideLine> list = new ArrayList<GuideLine>();
-        list.add(guideLine1);
-        list.add(guideLine2);
-        list.add(guideLine3);
-        list.add(guideLine4);
-        list.add(guideLine5);
-        return list;
+    public void addGuideLine(int image, int title, int description) {
+        GuideLine guideLine = new GuideLine(image, title, description);
+        guideLines.add(guideLine);
     }
 
     @NonNull

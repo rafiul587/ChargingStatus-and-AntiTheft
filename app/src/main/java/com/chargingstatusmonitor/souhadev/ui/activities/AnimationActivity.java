@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -36,24 +35,29 @@ public class AnimationActivity extends AppCompatActivity {
 
     private String selectedAnimation = "";
     private int closeMethod = 0;
-    private boolean isShowBatteryPercentageEnabled = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         OverlayAnimationViewBinding binding = OverlayAnimationViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        isShowBatteryPercentageEnabled = getIntent().getExtras().getBoolean(Constants.KEY_IS_BATTERY_PERCENTAGE_ENABLED, true);
+        boolean isShowBatteryPercentageEnabled = getIntent().getExtras().getBoolean(Constants.KEY_IS_BATTERY_PERCENTAGE_ENABLED, true);
         closeMethod = getIntent().getExtras().getInt(Constants.KEY_CLOSE_METHOD, 0);
         int playDuration = getIntent().getExtras().getInt(Constants.KEY_PLAY_DURATION, 3);
         selectedAnimation = getIntent().getExtras().getString(Constants.KEY_SELECTED_ANIMATION, Constants.DEFAULT_ANIMATION);
-        Log.d("TAG", "onCreate: " +selectedAnimation);
         makeFullScreenWindow();
+        setAnimation(binding);
+        if (isShowBatteryPercentageEnabled) {
+            setBatteryPercentage(binding);
+        }
+        setCloseInstruction(binding);
+        setOnTouchListener(binding);
+        startAnimationHandler(playDuration);
+    }
+
+    private void setAnimation(OverlayAnimationViewBinding binding) {
         if (selectedAnimation.equals(Constants.DEFAULT_ANIMATION)) {
-            Glide.with(this)
-                    .asGif()
-                    .load("file:///android_asset/animations/"+Constants.DEFAULT_ANIMATION)
-                    .into(binding.animationView);
+            Glide.with(this).asGif().load("file:///android_asset/animations/" + Constants.DEFAULT_ANIMATION).into(binding.animationView);
         } else {
             File storagePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), getString(R.string.download_folder_name));
             File[] files = storagePath.listFiles((dir, name) -> name.equals(selectedAnimation));
@@ -61,23 +65,25 @@ public class AnimationActivity extends AppCompatActivity {
                 Glide.with(this).asGif().load(files[0]).into(binding.animationView);
             }
         }
-        if (isShowBatteryPercentageEnabled) {
-            BatteryManager bm = (BatteryManager) this.getSystemService(BATTERY_SERVICE);
-            int batteryLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
-            binding.batteryPercentage.setText(batteryLevel + "%");
-            Shader shader = new LinearGradient(0, 0, 0, binding.batteryPercentage.getTextSize(), Color.parseColor("#BDFFC3"), Color.parseColor("#3E963F"), Shader.TileMode.CLAMP);
-            binding.batteryPercentage.getPaint().setShader(shader);
-        }
+    }
 
+    private void setBatteryPercentage(OverlayAnimationViewBinding binding) {
+        BatteryManager bm = (BatteryManager) this.getSystemService(BATTERY_SERVICE);
+        int batteryLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        binding.batteryPercentage.setText(batteryLevel + "%");
+        Shader shader = new LinearGradient(0, 0, 0, binding.batteryPercentage.getTextSize(), Color.parseColor("#BDFFC3"), Color.parseColor("#3E963F"), Shader.TileMode.CLAMP);
+        binding.batteryPercentage.getPaint().setShader(shader);
+    }
+
+    private void setCloseInstruction(OverlayAnimationViewBinding binding) {
         if (closeMethod == 0) {
             binding.closeInstruction.setText(R.string.instruct_single_tap);
         } else {
             binding.closeInstruction.setText(R.string.instruct_double_tap);
         }
+    }
 
-        animationHandler = new Handler(Looper.getMainLooper());
-
-        animationRunnable = this::finish;
+    private void setOnTouchListener(OverlayAnimationViewBinding binding) {
         binding.getRoot().getRootView().setOnTouchListener(new View.OnTouchListener() {
 
             private final GestureDetector gestureDetector = new GestureDetector(AnimationActivity.this, new GestureDetector.SimpleOnGestureListener() {
@@ -109,7 +115,11 @@ public class AnimationActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
 
+    private void startAnimationHandler(int playDuration) {
+        animationHandler = new Handler(Looper.getMainLooper());
+        animationRunnable = this::finish;
         animationHandler.postDelayed(animationRunnable, (playDuration * 1000L));
     }
 
@@ -120,20 +130,9 @@ public class AnimationActivity extends AppCompatActivity {
         } else {
             overlayType = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
         }
-        int windowFlags = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON |
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                WindowManager.LayoutParams.FLAG_FULLSCREEN |
-                WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
+        int windowFlags = WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED | WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON | WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD | WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR;
 
-        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                overlayType,
-                windowFlags,
-                PixelFormat.TRANSLUCENT
-        );
+        WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT, overlayType, windowFlags, PixelFormat.TRANSLUCENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             WindowInsetsController insetsController = getWindow().getInsetsController();
@@ -142,6 +141,10 @@ public class AnimationActivity extends AppCompatActivity {
             }
         }
         getWindow().setAttributes(layoutParams);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     @Override

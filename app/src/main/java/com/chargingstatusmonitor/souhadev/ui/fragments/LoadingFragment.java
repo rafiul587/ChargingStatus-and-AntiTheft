@@ -41,10 +41,7 @@ public class LoadingFragment extends Fragment {
                     // Wait for 500ms and then navigate to the next screen
                     if (!isNavigated) {
                         isNavigated = true;
-                        handler.postDelayed(() -> requireActivity().getSupportFragmentManager().beginTransaction()
-                                .setReorderingAllowed(true)
-                                .replace(R.id.fragmentContainerView, new StartFragment())
-                                .commitAllowingStateLoss(), 500);
+                        navigateToStartFragment();
                     }
                 } else {
                     handler.postDelayed(this, 200);
@@ -54,6 +51,13 @@ public class LoadingFragment extends Fragment {
 
         handler.postDelayed(runnable, 200);
         return binding.getRoot();
+    }
+
+    private void navigateToStartFragment() {
+        handler.postDelayed(() -> requireActivity().getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.fragmentContainerView, new StartFragment())
+                .commitAllowingStateLoss(), 500);
     }
 
     @Override

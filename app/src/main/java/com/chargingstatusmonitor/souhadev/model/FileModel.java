@@ -6,8 +6,6 @@ public class FileModel {
     private String duration;
     private String path;
 
-    private Boolean isPlaying = false;
-
     public FileModel(String id, String name, String duration, String path) {
         this.id = id;
         this.name = name;
@@ -47,11 +45,4 @@ public class FileModel {
         this.path = path;
     }
 
-    public Boolean getPlaying() {
-        return isPlaying;
-    }
-
-    public void setPlaying(Boolean playing) {
-        isPlaying = playing;
-    }
 }

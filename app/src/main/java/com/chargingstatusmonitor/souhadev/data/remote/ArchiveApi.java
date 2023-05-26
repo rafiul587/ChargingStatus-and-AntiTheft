@@ -2,7 +2,6 @@ package com.chargingstatusmonitor.souhadev.data.remote;
 
 import com.chargingstatusmonitor.souhadev.model.ApiResponse;
 
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -18,6 +17,6 @@ public interface ArchiveApi {
     @Streaming
     @GET("download/{identifier}/{filename}")
     Observable<ResponseBody> downloadFile(@Path("identifier") String identifier,
-                                         @Path("filename") String filename);
+                                          @Path("filename") String filename);
 }
 

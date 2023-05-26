@@ -1,22 +1,18 @@
 package com.chargingstatusmonitor.souhadev.ui.antitheft;
 
-import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.ANTI_POCKET_ALARM;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.ANTI_THEFT_PROTECTION;
 import static com.chargingstatusmonitor.souhadev.data.local.AppDataStore.TOUCH_ALARM;
 
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.MyApplication;
+import com.chargingstatusmonitor.souhadev.data.local.AppDataStore;
 import com.chargingstatusmonitor.souhadev.databinding.FragmentTouchAlarmBinding;
 import com.chargingstatusmonitor.souhadev.ui.fragments.CountDownTimerFragment;
 
@@ -54,7 +50,6 @@ public class TouchAlarmFragment extends Fragment {
                 }));
 
         binding.activationSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            Log.d("TAG", "onCreateView: " + isChecked);
             if (buttonView.isPressed()) {
                 if (isChecked) {
                     if (isAntiTheftProtectionEnabled) {
